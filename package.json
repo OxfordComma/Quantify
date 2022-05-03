@@ -1,0 +1,26 @@
+{
+  "name": "quantify",
+  "version": "1.0.0",
+  "description": "Plotting library for NodeJS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OxfordComma/Quantify.git"
+  },
+  "keywords": [
+    "plotting"
+  ],
+  "author": "Nick Lima",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OxfordComma/Quantify/issues"
+  },
+  "homepage": "https://github.com/OxfordComma/Quantify#readme",
+  "dependencies": {
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  }
+}
