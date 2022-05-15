@@ -1,2 +1,2 @@
-import Scatterplot from './Scatterplot'
+const Scatterplot = require('/Scatterplot.js');
 export { Scatterplot };
