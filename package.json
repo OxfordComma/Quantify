@@ -1,6 +1,6 @@
 {
   "name": "quantifyjs",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "description": "Plotting library for NodeJS.",
   "type": "module",
   "main": "dist/index.js",
@@ -10,7 +10,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rm -rf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files"
+    "build": "rm -rf dist  && NODE_ENV=production babel src/lib --out-dir dist --copy-files"
   },
   "repository": {
     "type": "git",
