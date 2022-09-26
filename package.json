@@ -1,7 +1,8 @@
 {
   "name": "quantifyjs",
-  "version": "0.0.4",
+  "version": "0.0.8",
   "description": "Plotting library for NodeJS.",
+  "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "files": [
