@@ -1,6 +1,7 @@
 {
   "name": "quantifyjs",
-  "version": "0.0.10",
+  "version": "0.1.0",
+  "exports": "dist/index.js",
   "description": "Plotting library for NodeJS.",
   "type": "module",
   "main": "dist/index.js",
@@ -27,8 +28,10 @@
   "homepage": "https://github.com/OxfordComma/Quantify#readme",
   "dependencies": {
     "d3": "^7.4.4",
+    "d3-svg-legend": "^2.25.6",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-dom": "^18.1.0",
+    "react-table": "^7.8.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.10",

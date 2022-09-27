@@ -1,14 +1,14 @@
 import React from 'react'
 import { useTable, useSortBy, useFilters, useRowSelect, useFlexLayout } from 'react-table'
-import styles from '../styles/Table.module.css'
+// import styles from '../styles/Table.module.css'
 
 
-function Table(props) {
+function ReactTable(props) {
 	// console.log(props)
 		var columns = Object.keys(props.options).map(c => {
 			return {
 				Header: c,
-				className: styles.theader,
+				className: props.styles.tablehead,
 				sortType: 'basic',
 				backgroundColor: 'rgba(52, 52, 52, 0.8)',
 				...props.options[c]
@@ -16,17 +16,19 @@ function Table(props) {
 		})
 
 	return (
-		<ReactTable
+		<Table
 			columns={React.useMemo(() => columns, [])} 
 			data={React.useMemo(() => props.data)}
 			sortBy={props.sortBy}
+			styles={props.styles}
 			rowStyle={props.rowStyle}
 		/>
 	)
 	// }
 }
 
-function ReactTable({ columns, data, sortBy, rowStyle }) {
+function Table({ columns, data, sortBy, styles, rowStyle }) {
+	// let styles = stylesheet
 	var manualRowSelectedKey = 'selected'
 	// Use the state and functions returned from useTable to build your UI
 	const {
@@ -99,4 +101,4 @@ function ReactTable({ columns, data, sortBy, rowStyle }) {
 	)
 }
 
-export default Table
+export default ReactTable

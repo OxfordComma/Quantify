@@ -1,5 +1,5 @@
-import Scatterplot from './Scatterplot'
-import Legend from './Legend'
+import Scatterplot from './Scatterplot.js'
+import Legend from './Legend.js'
 import * as d3 from "d3";
 import React from 'react'
 
