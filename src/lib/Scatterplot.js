@@ -195,6 +195,40 @@ class Scatterplot extends React.Component {
 
 
 		if (hue.name != this.state.hue?.name) {
+			let scaledHueType = typeof(hue.scale(hue.accessor(this.props.data[0])) )
+			
+			if (scaledHueType == 'number') {
+				console.log('numeric hue')
+				let hueMin = this.props.hue.min ?? d3.min(this.props.data, d => hue.accessor(d))
+				let hueMax = this.props.hue.max ?? d3.max(this.props.data, d => hue.accessor(d))
+				
+				console.log({
+					hueMin: hueMin,
+					hueMax: hueMax,
+				})
+			
+				hue.scale.domain([hueMin, hueMax])
+				hue.scale.range(this.props.hue.colorScale ?? this.props.continuousColorScale)
+			}
+			else {
+				console.log('discrete hue')
+				let hueMin = d3.min(this.props.data, d => hue.accessor(d))
+				let hueMax = d3.max(this.props.data, d => hue.accessor(d))
+				
+				console.log({
+					hueMin: hueMin,
+					hueMax: hueMax,
+				})
+				let discreteValues  = [...new Set(this.props.data.map(d => hue.accessor(d)))]
+				console.log('discrete hue values:', discreteValues)
+				hue.scale.domain(discreteValues)
+				hue.scale.range(this.props.hue.colorScale ?? this.props.discreteColorScale)
+
+				console.log({
+					hueDomain: hue.scale.domain(),
+					hueRange: hue.scale.range(),
+				})
+			}
 			this.setState({ hue: hue })
 		}
 
@@ -228,6 +262,38 @@ class Scatterplot extends React.Component {
 
 
 		if (size.name != this.state.size?.name) {
+			let scaledSizeType = typeof(size.scale(size.accessor(this.props.data[0])) )
+			console.log(size.scale(size.accessor(this.props.data[0])) )
+			
+			if (scaledSizeType == 'number') {
+				console.log('numeric size')
+				let sizeMin = d3.min(this.props.data, (d) => size?.accessor(d))
+				let sizeMax = d3.max(this.props.data, (d) => size?.accessor(d))
+
+				console.log({
+					sizeMin: sizeMin,
+					sizeMax: sizeMax,
+				})
+
+				size?.scale.domain([sizeMin, sizeMax].sort())
+				size?.scale.range([this.props.radius * 1.25, this.props.radius * 0.75])
+
+				console.log('size domain:',  size?.scale.domain())
+				console.log('size range:', size?.scale.range())
+
+			}
+			else {
+				console.log('non-numeric size')
+				let domain = [...new Set(this.props.data.map(d => size?.accessor(d)))].sort()
+				console.log('size domain set to: ', domain)
+				size?.scale.domain(domain)
+				if (size.scale.domain().length > 1)
+					size?.scale.range([this.props.radius * 1.25, this.props.radius * 0.75])
+				else
+					size?.scale.range([this.props.radius, this.props.radius])
+
+
+			}
 			this.setState({size: size})
 
 		}
@@ -302,81 +368,17 @@ class Scatterplot extends React.Component {
 
 
 		// Update Hue
-		let hue = this.state.hue;
-		if (!hue?.scale) return; 
+		// let hue = this.state.hue;
+		// if (!hue?.scale) return; 
 
-		let scaledHueType = typeof(hue.scale(hue.accessor(this.props.data[0])) )
-			
-		if (scaledHueType == 'number') {
-			console.log('numeric hue')
-			let hueMin = this.props.hue.min ?? d3.min(this.props.data, d => hue.accessor(d))
-			let hueMax = this.props.hue.max ?? d3.max(this.props.data, d => hue.accessor(d))
-			
-			console.log({
-				hueMin: hueMin,
-				hueMax: hueMax,
-			})
 		
-			hue.scale.domain([hueMin, hueMax])
-			hue.scale.range(this.props.hue.colorScale ?? this.props.continuousColorScale)
-		}
-		else {
-			console.log('discrete hue')
-			let hueMin = d3.min(this.props.data, d => hue.accessor(d))
-			let hueMax = d3.max(this.props.data, d => hue.accessor(d))
-			
-			console.log({
-				hueMin: hueMin,
-				hueMax: hueMax,
-			})
-			let discreteValues  = [...new Set(this.props.data.map(d => hue.accessor(d)))]
-			console.log('discrete hue values:', discreteValues)
-			hue.scale.domain(discreteValues)
-			hue.scale.range(this.props.hue.colorScale ?? this.props.discreteColorScale)
-
-			console.log({
-				hueDomain: hue.scale.domain(),
-				hueRange: hue.scale.range(),
-			})
-		}
 		
 
-		let size = this.state.size;
-		if (!size?.scale) return; 
+		// let size = this.state.size;
+		// if (!size?.scale) return; 
 
 		// Update Size
-		let scaledSizeType = typeof(size.scale(size.accessor(this.props.data[0])) )
-		console.log(size.scale(size.accessor(this.props.data[0])) )
-		
-		if (scaledSizeType == 'number') {
-			console.log('numeric size')
-			let sizeMin = d3.min(this.props.data, (d) => size?.accessor(d))
-			let sizeMax = d3.max(this.props.data, (d) => size?.accessor(d))
 
-			console.log({
-				sizeMin: sizeMin,
-				sizeMax: sizeMax,
-			})
-
-			size?.scale.domain([sizeMin, sizeMax].sort())
-			size?.scale.range([this.props.radius * 1.25, this.props.radius * 0.75])
-
-			console.log('size domain:',  size?.scale.domain())
-			console.log('size range:', size?.scale.range())
-
-		}
-		else {
-			console.log('non-numeric size')
-			let domain = [...new Set(this.props.data.map(d => size?.accessor(d)))].sort()
-			console.log('size domain set to: ', domain)
-			size?.scale.domain(domain)
-			if (size.scale.domain().length > 1)
-				size?.scale.range([this.props.radius * 1.25, this.props.radius * 0.75])
-			else
-				size?.scale.range([this.props.radius, this.props.radius])
-
-
-		}
 
 	}
 
