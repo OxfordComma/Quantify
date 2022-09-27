@@ -194,6 +194,7 @@ class Scatterplot extends React.Component {
 		}
 
 
+		console.log({hueDomain: hue.scale.domain()})
 		if (hue.name != this.state.hue?.name) {
 			let scaledHueType = typeof(hue.scale(hue.accessor(this.props.data[0])) )
 			
