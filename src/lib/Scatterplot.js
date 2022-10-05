@@ -416,7 +416,7 @@ class Scatterplot extends React.Component {
 			.enter().append('circle')
 			.attr('class', 'chart-item')
 			.on('mouseover', tip.show)
-			// .on('mouseout', tip.hide)
+			.on('mouseout', tip.hide)
 			// .on('mouseover', this.props.setTooltip ? (e, d) => this.props.setTooltip(d) : null)
 			// .on('mouseout', this.props.setTooltip ? (e, d) => this.props.setTooltip(undefined) : null)
 			.style('fill-opacity', 0)
