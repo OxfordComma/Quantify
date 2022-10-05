@@ -1,6 +1,7 @@
 import React from 'react';
 import * as d3 from "d3"; // import { regressionLoess, regressionQuad, regressionLinear, regressionExp } from 'd3-regression'
-// import d3Tip from 'd3-tip'
+
+import d3Tip from 'd3-tip';
 
 class Scatterplot extends React.Component {
   constructor(props) {
@@ -298,18 +299,21 @@ class Scatterplot extends React.Component {
   updatePoints() {
     // console.log('draw width:', this.state.drawWidth)
     // Add tip
-    // let tip = d3Tip().attr('class', 'd3-tip').html(this.props.tooltip)
-    // Add hovers using the d3-tip library        
-    // d3.select('.chart-group').call(tip);
-    // if (props.tooltip) {
+    let tip = d3Tip().attr('class', 'd3-tip').html((e, d) => `<div style="backdrop-filter: blur(10px); height:20px; padding-left:5px; padding-right:5px"">${this.props.setTooltip(d)}</div>`); // Add hovers using the d3-tip library        
+
+    d3.select('.chart-group').call(tip); // if (props.tooltip) {
     // }
     // Create the transparent background width
+
     let background = d3.select('.chart-group').selectAll('rect').data([null]);
     background.enter().append('rect').attr('class', 'chart-background').attr('x', 0).attr('y', 0).attr('width', '100%').attr('height', '100%').attr('opacity', 0).on('click', d => this.props.onClickBackground(d)); // Select all circles and bind data
 
     let circles = d3.select('.chart-group').selectAll('circle').data(this.props.data, this.props.keyBy ? this.props.keyBy : null); // Use the .enter() method to get your entering elements, and assign their positions
 
-    let circlesEnter = circles.enter().append('circle').attr('class', 'chart-item').on('mouseover', this.props.setTooltip ? (e, d) => this.props.setTooltip(d) : null).on('mouseout', this.props.setTooltip ? (e, d) => this.props.setTooltip(undefined) : null).style('fill-opacity', 0);
+    let circlesEnter = circles.enter().append('circle').attr('class', 'chart-item').on('mouseover', tip.show) // .on('mouseout', tip.hide)
+    // .on('mouseover', this.props.setTooltip ? (e, d) => this.props.setTooltip(d) : null)
+    // .on('mouseout', this.props.setTooltip ? (e, d) => this.props.setTooltip(undefined) : null)
+    .style('fill-opacity', 0);
     circlesEnter.merge(circles).on('click', d => this.props.onClickChartItem(d)).transition().duration(this.props.transitionSpeed).attr('fill', d => this.state.hue ? this.state.hue?.scale(this.state.hue?.accessor(d)) : this.props.color).attr('r', d => this.state.size ? this.state.size?.scale(this.state.size?.accessor(d)) : this.props.radius).attr('cx', d => this.state.x?.scale(this.state.x?.accessor(d))).attr('cy', d => this.state.y?.scale(this.state.y?.accessor(d))).style('fill-opacity', d => this.state.drawWidth > 0 ? 1 : 0).style('stroke', 'black').style('stroke-width', 0.5).style('stroke-opacity', d => this.state.drawWidth > 0 ? 1 : 0); // Use the .exit() and .remove() methods to remove elements that are no longer in the data
 
     circles.exit().transition().duration(this.props.transitionSpeed).style('fill-opacity', 0).remove();

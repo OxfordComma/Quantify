@@ -1,7 +1,7 @@
 import React from 'react'
 import * as d3 from "d3";
 // import { regressionLoess, regressionQuad, regressionLinear, regressionExp } from 'd3-regression'
-// import d3Tip from 'd3-tip'
+import d3Tip from 'd3-tip'
 
 
 class Scatterplot extends React.Component {
@@ -387,10 +387,10 @@ class Scatterplot extends React.Component {
 		// console.log('draw width:', this.state.drawWidth)
 
 		// Add tip
-		// let tip = d3Tip().attr('class', 'd3-tip').html(this.props.tooltip)
+		let tip = d3Tip().attr('class', 'd3-tip').html((e, d) => `<div style="backdrop-filter: blur(10px); height:20px; padding-left:5px; padding-right:5px"">${this.props.setTooltip(d)}</div>`)
 		
 		// Add hovers using the d3-tip library        
-		// d3.select('.chart-group').call(tip);
+		d3.select('.chart-group').call(tip);
 		// if (props.tooltip) {
 
 		// }
@@ -415,8 +415,10 @@ class Scatterplot extends React.Component {
 		let circlesEnter = circles
 			.enter().append('circle')
 			.attr('class', 'chart-item')
-			.on('mouseover', this.props.setTooltip ? (e, d) => this.props.setTooltip(d) : null)
-			.on('mouseout', this.props.setTooltip ? (e, d) => this.props.setTooltip(undefined) : null)
+			.on('mouseover', tip.show)
+			// .on('mouseout', tip.hide)
+			// .on('mouseover', this.props.setTooltip ? (e, d) => this.props.setTooltip(d) : null)
+			// .on('mouseout', this.props.setTooltip ? (e, d) => this.props.setTooltip(undefined) : null)
 			.style('fill-opacity', 0)
 			
 		
