@@ -8,7 +8,6 @@ function ReactTable(props) {
 		var columns = Object.keys(props.options).map(c => {
 			return {
 				Header: c,
-				className: props.styles.tablehead,
 				sortType: 'basic',
 				backgroundColor: 'rgba(52, 52, 52, 0.8)',
 				...props.options[c]
