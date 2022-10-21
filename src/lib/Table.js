@@ -3,57 +3,58 @@ import { useTable, useSortBy, useFilters, useRowSelect, useFlexLayout } from 're
 // import styles from '../styles/Table.module.css'
 
 
-function ReactTable(props) {
+function ReactTable({options, data, sortBy, styles, rowStyle}) {
 	// console.log(props)
-		var columns = Object.keys(props.options).map(c => {
+		var columns = Object.keys(options).map(c => {
 			return {
 				Header: c,
 				sortType: 'basic',
 				backgroundColor: 'rgba(52, 52, 52, 0.8)',
-				...props.options[c]
+				...options[c]
 			}
 		})
 
 	return (
 		<Table
 			columns={React.useMemo(() => columns, [])} 
-			data={React.useMemo(() => props.data)}
-			sortBy={props.sortBy}
-			styles={props.styles}
-			rowStyle={props.rowStyle}
+			data={React.useMemo(() => data)}
+			sortBy={sortBy}
+			styles={styles}
+			rowStyle={rowStyle}
 		/>
 	)
 	// }
 }
 
-function Table({ columns, data, sortBy, styles, rowStyle }) {
-	// let styles = stylesheet
+function Table({ columns, data, sortBy, styles, rowStyle, getRowProps }) {
 	var manualRowSelectedKey = 'selected'
 	// Use the state and functions returned from useTable to build your UI
 	const {
-		getTableProps,
-		getTableBodyProps,
-		headerGroups,
-		rows,
-		prepareRow,
-		selectedRowIds,
-	} = useTable({
-		columns,
-		data,
-		manualRowSelectedKey,
-		initialState: {
-				sortBy: [sortBy]
-		}
-	},
-	useFilters,
-	useSortBy,
-	useRowSelect,
-	// useFlexLayout,
-)
+			getTableProps,
+			getTableBodyProps,
+			headerGroups,
+			rows,
+			prepareRow,
+			selectedRowIds,
+		} = useTable({
+			columns,
+			data,
+			manualRowSelectedKey,
+			// sortBy,
+			styles,
+			// rowStyle,
+			initialState: {
+				sortBy: [sortBy ? sortBy : Object.keys(columns)[0] ]
+			}
+		},
+		useFilters,
+		useSortBy,
+		useRowSelect,
+		useFlexLayout,
+	)
 
 
-	// data = data.filter(d => )
-	// Render the UI for your table
+	// From react-table documentation
 	return (
 		<div className={styles.table}>
 			<style jsx>{`
@@ -72,7 +73,7 @@ function Table({ columns, data, sortBy, styles, rowStyle }) {
 								{/*console.log('column:', column)*/}
 								return(
 								<th key={column.Header} className={`${styles.headercell} ${styles.cell}`} {...column.getHeaderProps({ className: column.className, ...column.getSortByToggleProps() })}>
-									{column.render('Header') + (column.isSorted ? (column.isSortedDesc ? '↑' : '↓') : '⠀')}
+									{column.render('Header') + (column.isSorted ? (column.isSortedDesc ? '↓' : '↑') : '⠀')}
 									{/*column.canFilter ? column.render('Filter') : null*/}
 			
 								</th>
