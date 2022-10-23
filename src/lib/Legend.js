@@ -79,8 +79,9 @@ class Legend extends React.Component {
 			if (scaleType == 'number') {
 				console.log('numeric legend')
 			
-				let min = this.props.by.min ?? d3.min(this.props.data, d => by.accessor(d))
-				let max = this.props.by.max ?? d3.max(this.props.data, d => by.accessor(d))
+				let min = this.props.min ?? this.props.by.min ?? d3.min(this.props.data, d => by.accessor(d))
+				let max = this.props.max ?? this.props.by.max ?? d3.max(this.props.data, d => by.accessor(d))
+				
 				console.log({
 					'legend min': min,
 					'legend max': max,
@@ -95,6 +96,9 @@ class Legend extends React.Component {
 				console.log(discreteValues)
 				by.scale.domain(discreteValues)
 				by.scale.range(this.props.by.colorScale ?? this.props.discreteColorScale)
+
+				by.scale.nice()
+
 
 				console.log({
 					byDomain: by.scale.domain(),
@@ -135,7 +139,7 @@ class Legend extends React.Component {
 			 //  		this.props.format(generatedLabels[i]) :
 			 //  		generatedLabels[i] )})
 			  .shapeWidth(30)
-			  .cells(scaleType == 'number' ? 10 : [...new Set(this.props.data.map(d => by.accessor(d)))].length)
+			  .cells(this.props.ticks ?? scaleType == 'number' ? 11 : [...new Set(this.props.data.map(d => by.accessor(d)))].length)
 			  .orient(this.props.orientation)
 			  .scale(this.state.by.scale)
 				.on('cellclick', d => this.props.onClickLegend(d))

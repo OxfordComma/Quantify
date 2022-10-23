@@ -27,8 +27,10 @@ function ScatterplotLegend(props) {
 				yMax={props.yMax ? props.yMax : undefined}
 				xLabel={props.xLabel ? props.xLabel : undefined}
 				yLabel={props.yLabel ? props.yLabel : undefined}
-				xFormat={props.x.format ? props.x.format : undefined}
-				yFormat={props.y.format ? props.y.format : undefined}
+				xFormat={props.xFormat ?? props.x.format}
+				yFormat={props.yFormat ?? props.y.format}
+				xTicks={props.xTicks}
+				yTicks={props.yTicks}
 				colorScale={props.colorScale ? props.colorScale : undefined}
 				setTooltip={props.setTooltip ? props.setTooltip : undefined}
 				marginTop={props.marginTop ? props.marginTop : undefined}
@@ -42,9 +44,10 @@ function ScatterplotLegend(props) {
 				by={props.hue ? props.hue : undefined}
 				data={props.data}
 				// colorScale={props.hue ? props.hue.colorScale : undefined}
-				min={props.legendMin ? props.legendMin : undefined}
-				max={props.legendMax ? props.legendMax : undefined}
-				format={props.format ? props.format : undefined}
+				min={props.legendMin}
+				max={props.legendMax}
+				ticks={props.legendTicks}
+				format={props.legendFormat}
 				// nice={'nice'}
 			/>
 		</div>

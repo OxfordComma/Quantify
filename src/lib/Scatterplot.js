@@ -341,7 +341,7 @@ class Scatterplot extends React.Component {
 
 		// X Range
 		x.scale.range([this.props.marginLeft, this.state.drawWidth + this.props.marginLeft - this.props.marginRight])
-
+		x.scale.nice()
 
 
 		let y = this.state.y
@@ -355,6 +355,9 @@ class Scatterplot extends React.Component {
 		y.max = Math.min(y.max, yMax)
 
 		y.scale.domain([y.min, y.max])
+		y.scale.nice()
+
+
 		
 
 
@@ -415,10 +418,13 @@ class Scatterplot extends React.Component {
 		let circlesEnter = circles
 			.enter().append('circle')
 			.attr('class', 'chart-item')
-			.on('mouseover', tip.show)
-			.on('mouseout', tip.hide)
-			// .on('mouseover', this.props.setTooltip ? (e, d) => this.props.setTooltip(d) : null)
-			// .on('mouseout', this.props.setTooltip ? (e, d) => this.props.setTooltip(undefined) : null)
+			.style('cursor', 'pointer')
+			.attr('cx', d => this.state.x?.scale(this.state.x?.accessor(d)) )
+			.attr('cy', d => this.state.y?.scale(this.state.y?.accessor(d)) )
+			// .on('mouseover', tip.show)
+			// .on('mouseout', tip.hide)
+			.on('mouseover', this.props.setTooltip ? (e, d) => this.props.setTooltip(d) : null)
+			.on('mouseout', this.props.setTooltip ? (e, d) => this.props.setTooltip(undefined) : null)
 			.style('fill-opacity', 0)
 			
 		
@@ -445,12 +451,12 @@ class Scatterplot extends React.Component {
 		let xAxisFunction = d3.axisBottom()
 			.scale(this.state.x?.scale)
 			.ticks(this.props.xTicks)
-			.tickFormat(this.props.x.format ?? this.props.defaultFormat)
+			.tickFormat(this.props.xFormat ?? this.props.x.format ?? this.props.defaultFormat)
 
 		let yAxisFunction = d3.axisLeft()
 			.scale(this.state.y?.scale)
 			.ticks(this.props.yTicks)
-			.tickFormat(this.props.y.format ?? this.props.defaultFormat);
+			.tickFormat(this.props.yFormat ?? this.props.y.format ?? this.props.defaultFormat);
 
 		d3.select('.x-axis-g')
 			.transition().duration(this.props.transitionSpeed)
