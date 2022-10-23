@@ -274,6 +274,7 @@ class Scatterplot extends React.Component {
 
 
     x.scale.range([this.props.marginLeft, this.state.drawWidth + this.props.marginLeft - this.props.marginRight]);
+    x.scale.nice();
     let y = this.state.y;
     if (!y?.scale) return; // Update Domain
 
@@ -281,7 +282,8 @@ class Scatterplot extends React.Component {
     let yMax = d3.max(this.props.data, d => +y?.accessor(d));
     y.min = Math.max(y.min, yMin);
     y.max = Math.min(y.max, yMax);
-    y.scale.domain([y.min, y.max]); // Update Range
+    y.scale.domain([y.min, y.max]);
+    y.scale.nice(); // Update Range
     // let a = y.scale.range()
     // let b = [this.state.drawHeight, this.props.marginTop]
     // if (!(a.every(item => b.includes(item)) && b.every(item => a.includes(item)))) {
@@ -310,9 +312,9 @@ class Scatterplot extends React.Component {
 
     let circles = d3.select('.chart-group').selectAll('circle').data(this.props.data, this.props.keyBy ? this.props.keyBy : null); // Use the .enter() method to get your entering elements, and assign their positions
 
-    let circlesEnter = circles.enter().append('circle').attr('class', 'chart-item').on('mouseover', tip.show).on('mouseout', tip.hide) // .on('mouseover', this.props.setTooltip ? (e, d) => this.props.setTooltip(d) : null)
-    // .on('mouseout', this.props.setTooltip ? (e, d) => this.props.setTooltip(undefined) : null)
-    .style('fill-opacity', 0);
+    let circlesEnter = circles.enter().append('circle').attr('class', 'chart-item').style('cursor', 'pointer').attr('cx', d => this.state.x?.scale(this.state.x?.accessor(d))).attr('cy', d => this.state.y?.scale(this.state.y?.accessor(d))) // .on('mouseover', tip.show)
+    // .on('mouseout', tip.hide)
+    .on('mouseover', this.props.setTooltip ? (e, d) => this.props.setTooltip(d) : null).on('mouseout', this.props.setTooltip ? (e, d) => this.props.setTooltip(undefined) : null).style('fill-opacity', 0);
     circlesEnter.merge(circles).on('click', d => this.props.onClickChartItem(d)).transition().duration(this.props.transitionSpeed).attr('fill', d => this.state.hue ? this.state.hue?.scale(this.state.hue?.accessor(d)) : this.props.color).attr('r', d => this.state.size ? this.state.size?.scale(this.state.size?.accessor(d)) : this.props.radius).attr('cx', d => this.state.x?.scale(this.state.x?.accessor(d))).attr('cy', d => this.state.y?.scale(this.state.y?.accessor(d))).style('fill-opacity', d => this.state.drawWidth > 0 ? 1 : 0).style('stroke', 'black').style('stroke-width', 0.5).style('stroke-opacity', d => this.state.drawWidth > 0 ? 1 : 0); // Use the .exit() and .remove() methods to remove elements that are no longer in the data
 
     circles.exit().transition().duration(this.props.transitionSpeed).style('fill-opacity', 0).remove();
@@ -320,8 +322,8 @@ class Scatterplot extends React.Component {
 
   updateAxes() {
     // Graph width and height - accounting for margins
-    let xAxisFunction = d3.axisBottom().scale(this.state.x?.scale).ticks(this.props.xTicks).tickFormat(this.props.x.format ?? this.props.defaultFormat);
-    let yAxisFunction = d3.axisLeft().scale(this.state.y?.scale).ticks(this.props.yTicks).tickFormat(this.props.y.format ?? this.props.defaultFormat);
+    let xAxisFunction = d3.axisBottom().scale(this.state.x?.scale).ticks(this.props.xTicks).tickFormat(this.props.xFormat ?? this.props.x.format ?? this.props.defaultFormat);
+    let yAxisFunction = d3.axisLeft().scale(this.state.y?.scale).ticks(this.props.yTicks).tickFormat(this.props.yFormat ?? this.props.y.format ?? this.props.defaultFormat);
     d3.select('.x-axis-g').transition().duration(this.props.transitionSpeed).call(xAxisFunction).attr('font-family', null);
     d3.select('.y-axis-g').transition().duration(this.props.transitionSpeed).call(yAxisFunction).attr('font-family', null);
   }
