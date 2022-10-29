@@ -5,7 +5,15 @@ import { useTable, useSortBy, useFilters, useRowSelect, useFlexLayout } from 're
 
 function ReactTable({options, data, sortBy, styles, rowStyle}) {
 	// console.log(props)
-		var columns = Object.keys(options).map(c => {
+		let columns = Object.keys(options).map(c => {
+			let opt = options[c]
+
+			if (!opt.name) 
+				opt.name = [c]
+
+			if (!opt.accessor) 
+				opt.accessor = d => d[c]
+
 			return {
 				Header: c,
 				sortType: 'basic',
@@ -13,6 +21,9 @@ function ReactTable({options, data, sortBy, styles, rowStyle}) {
 				...options[c]
 			}
 		})
+
+	// BAD CODE FOR TESTING
+	rowStyle = Object.keys(options).map(c => options[c].width ?? '15%').join(' ')
 
 	return (
 		<Table
@@ -38,7 +49,7 @@ function Table({ columns, data, sortBy, styles, rowStyle, getRowProps }) {
 			selectedRowIds,
 		} = useTable({
 			columns,
-			data,
+			data,	
 			manualRowSelectedKey,
 			// sortBy,
 			styles,
@@ -68,7 +79,8 @@ function Table({ columns, data, sortBy, styles, rowStyle, getRowProps }) {
 					{headerGroups.map(headerGroup => {
 						{/*console.log('headerGroup:', headerGroup)*/}
 						return (
-						<tr className={styles.row} id='tablerow' key={headerGroup.headers.reduce((acc, curr) => acc = acc+curr)} {...headerGroup.getHeaderGroupProps()}>
+						<tr >
+							<div className={styles.row}  id='tablerow' key={headerGroup.headers.reduce((acc, curr) => acc = acc+curr)} {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => {
 								{/*console.log('column:', column)*/}
 								return(
@@ -78,6 +90,7 @@ function Table({ columns, data, sortBy, styles, rowStyle, getRowProps }) {
 			
 								</th>
 							)})}
+							</div>
 						</tr>
 					)})}
 				</thead>

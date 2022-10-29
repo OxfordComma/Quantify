@@ -49,6 +49,7 @@ class Legend extends React.Component {
 
 		let scaleType
 		if (by.scale) {
+			by.scale = this.props.by.scale.copy()
 			console.log('domain length:', by.scale.domain().length)
 			scaleType = by.scale.domain().length == 2 ? 'number' : 'string'
 
@@ -64,10 +65,10 @@ class Legend extends React.Component {
 			// 	by.scale = d3.scaleOrdinal(this.props.by.colorScale ?? this.props.discreteColorScale)
 		}
 		if (scaleType == 'number') 
-			by.scale = d3.scaleLinear(this.props.by.colorScale ?? this.props.continuousColorScale)
+			by.scale = d3.scaleLinear(this.props.by?.colorScale ?? this.props.continuousColorScale)
 
 		else
-			by.scale = d3.scaleOrdinal(this.props.by.colorScale ?? this.props.discreteColorScale)
+			by.scale = d3.scaleOrdinal(this.props.by?.colorScale ?? this.props.discreteColorScale)
 
 		
 		// let byType = typeof(by.accessor(this.props.data[0]))

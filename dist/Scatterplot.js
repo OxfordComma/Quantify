@@ -57,6 +57,7 @@ class Scatterplot extends React.Component {
 
   updateObjects() {
     console.log('updateobjects state:', this.state);
+    console.log('updateobjects props:', this.props);
     let x, y, hue, size;
     this.updateDimensions(); // let drawWidth = this.svgRef.current?.clientWidth - this.props.marginLeft - this.props.marginRight
     // let drawHeight = this.svgRef.current?.clientHeight - this.props.marginTop - this.props.marginBottom

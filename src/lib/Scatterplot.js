@@ -66,6 +66,7 @@ class Scatterplot extends React.Component {
 
 	updateObjects() {
 		console.log('updateobjects state:', this.state)
+		console.log('updateobjects props:', this.props)
 
 		let x, y, hue, size;
 
