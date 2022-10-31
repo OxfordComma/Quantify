@@ -14,6 +14,11 @@ function ReactTable({options, data, sortBy, styles, rowStyle}) {
 			if (!opt.accessor) 
 				opt.accessor = d => d[c]
 
+			if (opt.format && !opt.Cell)
+				opt.Cell = d => <div>{opt.format(d.row.original[c])}</div>
+				
+			// Cell: d => <a href={d.row.original.uri}>{d.row.original.album.name}</a>,
+
 			return {
 				Header: c,
 				sortType: 'basic',
