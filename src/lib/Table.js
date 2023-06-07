@@ -6,9 +6,6 @@ import React from 'react'
 
 
 export default function Table({ data, columns, sortCol, sortDir, styles, onClickHeader }) {
-	console.log('table data:', data)
-	
-		
 
 	return (
 		<div className={styles.table}>
