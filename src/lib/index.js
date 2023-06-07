@@ -9,5 +9,11 @@ import Legend from './Legend.js'
 
 import Table from './Table.js'
 
+import DropdownFilter from './DropdownFilter.js'
+
 // const Table = require('./Table.js');
-export { Scatterplot, ScatterplotLegend, Legend, Table };
+export { 
+	Scatterplot, ScatterplotLegend, Legend, 
+	Table,
+	DropdownFilter
+};
