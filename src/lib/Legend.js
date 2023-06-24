@@ -98,7 +98,7 @@ class Legend extends React.Component {
 				by.scale.domain(discreteValues)
 				by.scale.range(this.props.by.colorScale ?? this.props.discreteColorScale)
 
-				by.scale.nice()
+				// by.scale.nice()
 
 
 				console.log({
