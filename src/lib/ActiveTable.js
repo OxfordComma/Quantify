@@ -2,8 +2,26 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import Table from './Table'
+import * as d3 from 'd3'
+
 
 export default function ActiveTable({ data: rawData, options, styles }) {
+	if (options === undefined) {
+		options = {}
+		const unique = Object.keys(rawData[0])
+		unique.map(u => {
+			options[u] = {}
+		})
+	}
+
+	function detectDataType(datum, accessor) {
+ 		if (accessor(datum) instanceof Date) 
+ 			return 'date'
+
+ 		else 
+ 			return typeof(accessor(datum))
+ 	}
+
 	let columns = Object.keys(options).map(c => {
 		let opt = options[c]
 
@@ -13,8 +31,14 @@ export default function ActiveTable({ data: rawData, options, styles }) {
 		if (!opt.accessor) 
 			opt.accessor = d => d[c]
 
+		
+
 		if (opt.format && !opt.cell)
 			opt.cell = d => <div>{opt.format(d.row.original[c])}</div>
+
+		if ( detectDataType(rawData[0], opt.accessor) == 'date' && !opt.format) {
+			opt.format = d3.utcFormat("%Y-%m-%d")
+		}
 			
 		// Cell: d => <a href={d.row.original.uri}>{d.row.original.album.name}</a>,
 
@@ -42,7 +66,7 @@ export default function ActiveTable({ data: rawData, options, styles }) {
 
 	function onClickHeader(e) {
 		e.preventDefault();
-		let newSortCol = e.target.textContent.trim().replace(/[↓↑]/, '')
+		let newSortCol = e.target.textContent.replace(/[↓↑]/, '').trim()
 		let newSortDir = sortDir
 		let newData = data
 
@@ -56,13 +80,14 @@ export default function ActiveTable({ data: rawData, options, styles }) {
 			newSortDir = 'asc'
 			newData = newData.sort((a, b) => a[newSortCol] > b[newSortCol] ? 1 : -1)
 		}
-		else if (newSortDir == 'asc') {
+		else if (newSortDir === 'asc') {
 			newSortDir = 'desc'
 			newData = newData.sort((a, b) => (a[newSortCol] < b[newSortCol] ? 1 : -1) )
 			
 		}
-		else if (newSortDir == 'desc') {
+		else if (newSortDir === 'desc') {
 			newSortDir = null
+			newSortCol = null
 			newData = newData.sort((a, b) => (a['index'] < b['index'] ? 1 : -1) )
 		}
 		

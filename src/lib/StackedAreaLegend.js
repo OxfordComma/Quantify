@@ -5,7 +5,7 @@ import * as d3 from 'd3'
 
 import StackedArea from './StackedArea'
 import Legend from './Legend'
-import styles from './StackedAreaLegend.module.css'
+// import styles from './StackedAreaLegend.module.css'
 
 
 
@@ -46,6 +46,31 @@ export default function StackedAreaLegend({
 	
 	const [selectedLegendList, setSelectedLegendList] = useState([ ])
 	console.log('Rendering data', data)
+
+	let styles = {
+		'container': {
+			'width': '100%',
+			'height': '100%',
+			'overflow': 'hidden',
+
+			'display': 'flex',
+			'flex-direction': 'row',
+
+		},
+
+		'stacked-area': {
+			'flex': 4,
+		},
+
+		'legend': {
+			'flex': 1,
+			'overflow-y': 'scroll',
+			'margin': 0,
+			'cursor': 'pointer',
+		},
+
+
+	}
 
 	let onClickStackedArea = (e) => {
 		e.preventDefault()
@@ -124,8 +149,8 @@ export default function StackedAreaLegend({
   // 	.range(stackRange)
 
 
-	return <div className={styles.container}>
-		<div className={styles['stacked-area']}>
+	return <div style={styles['container']}>
+		<div style={styles['stacked-area']}>
 			{stackedData.length > 0 ? (
 				<StackedArea
 					data={data}
@@ -164,7 +189,7 @@ export default function StackedAreaLegend({
 			/>
 		) : <div></div>}
 	</div>
-	<div className={styles['legend']}>
+	<div style={styles['legend']}>
 		{data.length > 0 ? <Legend
 			by={stackBy}
 			data={data}
