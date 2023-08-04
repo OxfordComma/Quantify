@@ -1,19 +1,24 @@
-// const Scatterplot = require('./Scatterplot.js');
-import Scatterplot from './Scatterplot.js'
+// const Scatterplot = require('./Scatterplot');
+import Scatterplot from './Scatterplot'
 
-// const ScatterplotLegend = require('./ScatterplotLegend.js');
-import ScatterplotLegend from './ScatterplotLegend.js'
+// const ScatterplotLegend = require('./ScatterplotLegend');
+import ScatterplotLegend from './ScatterplotLegend'
 
-// const Legend = require('./Legend.js');
-import Legend from './Legend.js'
+import StackedArea from './StackedArea'
+import StackedAreaLegend from './StackedAreaLegend'
 
-import Table from './ActiveTable.js'
+import Legend from './Legend'
 
-import DropdownFilter from './DropdownFilter.js'
+import Table from './ActiveTable'
 
-// const Table = require('./Table.js');
+import Dropdown from './Dropdown'
+import DropdownFilter from './DropdownFilter'
+
+// const Table = require('./Table');
 export { 
-	Scatterplot, ScatterplotLegend, Legend, 
+	Scatterplot, ScatterplotLegend, 
+	StackedArea, StackedAreaLegend,
+	Legend, 
 	Table,
-	DropdownFilter
+	Dropdown, DropdownFilter
 };
