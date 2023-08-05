@@ -20,6 +20,7 @@ export default function StackedAreaLegend({
 	dateFormat,
 	colorScale,
 	stackOffset,
+	amplitude,
 	xTitle,
 	yTitle,
 	legendTitle,
@@ -162,7 +163,7 @@ export default function StackedAreaLegend({
 					onClickBackground={onClickBackground}
 					fontSize={fontSize}
 					// fontFamily='Playfair Display'
-					amplitude={1}
+					amplitude={amplitude}
 					agg={agg}
 					aggBy={aggBy}
 					orientation={orientation}

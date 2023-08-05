@@ -4,6 +4,8 @@ import React from 'react';
 import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { select, scaleTime, scaleLinear, extent, axisLeft, axisBottom, format, area, curveBasis, stack, max, sum, stackOffsetWiggle, csv } from 'd3';
+import { jsx as _jsx } from "react/jsx-runtime";
+import { jsxs as _jsxs } from "react/jsx-runtime";
 export default function Scatterplot({
   x,
   y,
@@ -362,28 +364,35 @@ export default function Scatterplot({
     d3.select('.x-axis-g').transition().duration(transitionSpeed).call(xAxisFunction).attr('font-family', null);
     d3.select('.y-axis-g').transition().duration(transitionSpeed).call(yAxisFunction).attr('font-family', null);
   }, [xAxis, yAxis, sizeAxis, hueAxis, dimensions]);
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("svg", {
-    ref: d3Container,
-    width: "100%",
-    height: "100%"
-  }, /*#__PURE__*/React.createElement("g", {
-    className: "chart-container"
-  }, /*#__PURE__*/React.createElement("g", {
-    transform: `translate(${dimensions.width / 2},0)`
-  }, title), /*#__PURE__*/React.createElement("g", {
-    className: "x-axis-g",
-    style: {
-      'font-family': null
-    },
-    transform: `translate(${0}, ${dimensions.height - marginBottom - xAxisMargin})`
-  }), /*#__PURE__*/React.createElement("g", {
-    className: "y-axis-g",
-    transform: `translate(${marginLeft}, ${0})`
-  })), /*#__PURE__*/React.createElement("text", {
-    className: "x-axis-label",
-    transform: `translate(${dimensions.width / 2}, ${dimensions.height - 5})`
-  }, xAxis.title), /*#__PURE__*/React.createElement("text", {
-    className: "y-axis-label",
-    transform: `translate(${0}, ${15})`
-  }, yAxis.title))); // }
+  return /*#__PURE__*/_jsx("div", {
+    children: /*#__PURE__*/_jsxs("svg", {
+      ref: d3Container,
+      width: "100%",
+      height: "100%",
+      children: [/*#__PURE__*/_jsxs("g", {
+        className: "chart-container",
+        children: [/*#__PURE__*/_jsx("g", {
+          transform: `translate(${dimensions.width / 2},0)`,
+          children: title
+        }), /*#__PURE__*/_jsx("g", {
+          className: "x-axis-g",
+          style: {
+            'font-family': null
+          },
+          transform: `translate(${0}, ${dimensions.height - marginBottom - xAxisMargin})`
+        }), /*#__PURE__*/_jsx("g", {
+          className: "y-axis-g",
+          transform: `translate(${marginLeft}, ${0})`
+        })]
+      }), /*#__PURE__*/_jsx("text", {
+        className: "x-axis-label",
+        transform: `translate(${dimensions.width / 2}, ${dimensions.height - 5})`,
+        children: xAxis.title
+      }), /*#__PURE__*/_jsx("text", {
+        className: "y-axis-label",
+        transform: `translate(${0}, ${15})`,
+        children: yAxis.title
+      })]
+    })
+  }); // }
 }
