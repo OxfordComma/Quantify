@@ -283,7 +283,8 @@ export default function StackedArea({
 
       let sums = d3.rollup(data, reducer, d => d[groupBy])
   
-      let sumsMax = d3.max(sums.values())
+      let sumsMax = d3.max(sums.values()) 
+      sumsMax = sumsMax / amplitude
       let sumsDomain = [0, sumsMax]
 
       let groupByDomain = [
