@@ -1,7 +1,4 @@
-// const Scatterplot = require('./Scatterplot');
 import Scatterplot from './Scatterplot'
-
-// const ScatterplotLegend = require('./ScatterplotLegend');
 import ScatterplotLegend from './ScatterplotLegend'
 
 import StackedArea from './StackedArea'
