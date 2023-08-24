@@ -10,6 +10,7 @@ import Table from './ActiveTable'
 
 import Dropdown from './Dropdown'
 import DropdownFilter from './DropdownFilter'
+import MenuBar from './MenuBar'
 
 // const Table = require('./Table');
 export { 
@@ -17,5 +18,6 @@ export {
 	StackedArea, StackedAreaLegend,
 	Legend, 
 	Table,
-	Dropdown, DropdownFilter
+	Dropdown, DropdownFilter,
+	MenuBar,
 };
