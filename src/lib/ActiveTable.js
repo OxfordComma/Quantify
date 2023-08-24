@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { useState, useEffect } from 'react';
-import Table from './Table'
+import Table from './Table.js'
 import * as d3 from 'd3'
 
 

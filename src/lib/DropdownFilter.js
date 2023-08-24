@@ -2,7 +2,7 @@
 import React from 'react'
 
 import { useState, useEffect } from 'react'
-import Dropdown from './Dropdown'
+import Dropdown from './Dropdown.js'
 // import { useTable, useSortBy, useFilters, useRowSelect, useFlexLayout } from 'react-table'
 // import styles from '../styles/Table.module.css'
 

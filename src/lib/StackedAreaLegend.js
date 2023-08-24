@@ -3,8 +3,8 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import * as d3 from 'd3'
 
-import StackedArea from './StackedArea'
-import Legend from './Legend'
+import StackedArea from './StackedArea.js'
+import Legend from './Legend.js'
 // import styles from './StackedAreaLegend.module.css'
 
 
