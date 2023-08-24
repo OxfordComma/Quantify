@@ -12,7 +12,7 @@ function MenuBarItem({
   styles={}
 }) {
   // console.log('show me?', show)
-  let updateShow = (showMe) => setShow(s => { let obj = Object.assign({}, s); obj[title] = showMe; return obj })
+  // let updateShow = (showMe) => setShow(s => { let obj = Object.assign({}, s); obj[title] = showMe; return obj })
 
   const dropdownStyles = {
     position: 'fixed',

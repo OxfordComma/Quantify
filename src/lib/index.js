@@ -1,16 +1,16 @@
-import Scatterplot from './Scatterplot'
-import ScatterplotLegend from './ScatterplotLegend'
+import Scatterplot from './Scatterplot.js'
+import ScatterplotLegend from './ScatterplotLegend.js'
 
-import StackedArea from './StackedArea'
-import StackedAreaLegend from './StackedAreaLegend'
+import StackedArea from './StackedArea.js'
+import StackedAreaLegend from './StackedAreaLegend.js'
 
-import Legend from './Legend'
+import Legend from './Legend.js'
 
-import Table from './ActiveTable'
+import Table from './ActiveTable.js'
 
 import Dropdown from './Dropdown'
-import DropdownFilter from './DropdownFilter'
-import MenuBar from './MenuBar'
+import DropdownFilter from './DropdownFilter.js'
+import MenuBar from './MenuBar.js'
 
 // const Table = require('./Table');
 export { 
