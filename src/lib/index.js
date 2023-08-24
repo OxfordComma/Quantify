@@ -8,7 +8,7 @@ import Legend from './Legend.js'
 
 import Table from './ActiveTable.js'
 
-import Dropdown from './Dropdown'
+import Dropdown from './Dropdown.js'
 import DropdownFilter from './DropdownFilter.js'
 import MenuBar from './MenuBar.js'
 
