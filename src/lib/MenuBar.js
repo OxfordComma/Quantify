@@ -1,5 +1,6 @@
+'use client'
 // import styles from '../styles/MenuBar.module.css'
-import Link from 'next/link'
+// import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
 
@@ -12,7 +13,7 @@ function MenuBarItem({
   styles={}
 }) {
   // console.log('show me?', show)
-  // let updateShow = (showMe) => setShow(s => { let obj = Object.assign({}, s); obj[title] = showMe; return obj })
+  let updateShow = (showMe) => setShow(s => { let obj = Object.assign({}, s); obj[title] = showMe; return obj })
 
   const dropdownStyles = {
     position: 'fixed',
@@ -57,7 +58,7 @@ function MenuBarItem({
   }
   return (
     <div className={styles['menu-bar-item']} style={menuBarItemStyles} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
-      <Link 
+      <div 
         href=''
         legacyBehavior={false} 
         onClick={(e) => {
@@ -68,7 +69,7 @@ function MenuBarItem({
         }}
         >
           {title}
-      </Link>
+      </div>
       <div className={styles['menu-bar-dropdown']} style={dropdownStyles}>
       { show[title] ? menuItems?.map(menuItem => {
           let func = () => {}
@@ -80,7 +81,7 @@ function MenuBarItem({
             disabled = true
 
           return (
-            <Link 
+            <div 
               key={menuItem.title}
               className={styles['menu-bar-dropdown-item']}
               style={disabled ? {'opacity': '0.6'} : null}
@@ -95,7 +96,7 @@ function MenuBarItem({
               }}
             >
               {menuItem.title}
-          </Link>)
+          </div>)
         }) : null
       }
       </div>
@@ -110,13 +111,13 @@ function MenuBarItem({
 }
 
 export default function MenuBar({ 
-  menuItems, 
+  items={}, 
   styles={}
 }) {
-  let [show, setShow] = useState(Object.keys(menuItems).reduce((acc, curr) => {
-    acc[curr] = false
-    return acc
-  }, {}))
+  // let [show, setShow] = useState(Object.keys(allMenuItems).reduce((acc, curr) => {
+  //   acc[curr] = false
+  //   return acc
+  // }, {}))
 
   const basicStyles = {
     display: 'flex', 
@@ -125,8 +126,8 @@ export default function MenuBar({
   }
   return (
     <div className={styles['menu-bar']} style={basicStyles}>
-      {Object.keys(menuItems).map(key => {
-        let menu = menuItems[key]
+     {/* {Object.keys(allMenuItems).map(key => {
+        let menu = allMenuItems[key]
         if (menu instanceof Array) {
           return (
               <MenuBarItem
@@ -152,7 +153,7 @@ export default function MenuBar({
             />
           )
         }
-      })}
+      })}*/}
     </div>
   )
 }
