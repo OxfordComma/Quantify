@@ -11,8 +11,6 @@ function MenuBarItem({
   styles={}
 }) {
 
-
-  // const [show, setShow] = useState(false)
   let updateShow = (showMe) => setShowAll(s => { 
     let obj = Object.assign({}, s); 
     obj[title] = showMe; 
@@ -20,7 +18,7 @@ function MenuBarItem({
   })
 
   const show = showAll[title]
-  
+
   const dropdownStyles = {
     position: 'fixed',
     display: 'flex',
@@ -49,10 +47,7 @@ function MenuBarItem({
 
   const onMouseOver = (e) => {
     e.preventDefault();
-    e.stopPropagation();
-    console.log(showAll)
-    console.log(Object.values(showAll))
-    console.log('onMouseOver')
+
     if (Object.values(showAll).some(i => i)) {
       updateShow(true)
     }
@@ -66,44 +61,44 @@ function MenuBarItem({
     updateShow(false)
   }
 
+  const openMenuBar = (e) => {
+    event.preventDefault(); 
+    console.log('{'+title+'} item clicked')
+    show ? updateShow(false) : updateShow(true)
+  }
+
+  const onClickDropdownItem = (e) => {
+    event.preventDefault(); 
+    console.log(`${e.target.key} clicked`)
+    // console.log(`${menuItem.title} clicked`)
+      updateShow(false)
+  }
+
   return (
-    <div className={styles['menu-bar-item']} style={menuBarItemStyles}
-      onMouseOver={onMouseOver} onMouseOut={onMouseOut} >
-      <a 
-        href=''
-        onClick={(e) => {
-          event.preventDefault(); 
-          console.log('{'+title+'} item clicked')
-          show ? updateShow(false) : updateShow(true)
-        }}>
+    <div className={styles['menu-bar-item']} style={menuBarItemStyles} onMouseOver={onMouseOver} onMouseOut={onMouseOut} >
+      <div
+        onClick={openMenuBar}>
           {title}
-      </a>
-      <div className={styles['menu-bar-dropdown']}  style={dropdownStyles}
-      onMouseOver={onMouseOver} onMouseOut={onMouseOut} >
-      { show ? menuItems?.map(menuItem => {
+      </div>
+      <div className={styles['menu-bar-dropdown']}  style={dropdownStyles} onMouseOver={onMouseOver} onMouseOut={onMouseOut} >
+        { show ? menuItems?.map(menuItem => {
           let func = () => {}
           if (menuItem.onClick)
             func = menuItem.onClick
 
           let disabled = false
-          if (menuItem.disabled)
+          if (menuItem.disabled == true)
             disabled = true
+
           return (
-            <a 
+            <div
               key={menuItem.title}
               className={styles['menu-bar-dropdown-item']}
               style={disabled ? {'opacity': '0.6'} : null}
-              href=''
-              onClick={(e) => {
-                event.preventDefault(); 
-                console.log(`${menuItem.title} clicked`)
-                if (!disabled)
-                  func()
-                  updateShow(false)                
-              }}
+              onClick={(e) => { onClickDropdownItem(e); func(); }}
             >
               {menuItem.title}
-          </a>)
+          </div>)
         }) : null
       }
       </div>
