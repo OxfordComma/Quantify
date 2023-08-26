@@ -1,20 +1,26 @@
 'use client'
-// import styles from '../styles/MenuBar.module.css'
-// import Link from 'next/link'
+
+import React from 'react'
 import { useState, useEffect } from 'react'
-
-
 function MenuBarItem({ 
   title, 
   menuItems,
   justify,
-  show,
-  setShow,
+  showAll,
+  setShowAll,
   styles={}
 }) {
-  // console.log('show me?', show)
-  let updateShow = (showMe) => setShow(s => { let obj = Object.assign({}, s); obj[title] = showMe; return obj })
 
+
+  // const [show, setShow] = useState(false)
+  let updateShow = (showMe) => setShowAll(s => { 
+    let obj = Object.assign({}, s); 
+    obj[title] = showMe; 
+    return obj 
+  })
+
+  const show = showAll[title]
+  
   const dropdownStyles = {
     position: 'fixed',
     display: 'flex',
@@ -44,34 +50,37 @@ function MenuBarItem({
   const onMouseOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log(showAll)
+    console.log(Object.values(showAll))
     console.log('onMouseOver')
-    if (Object.values(show).some(i => i)) {
+    if (Object.values(showAll).some(i => i)) {
       updateShow(true)
     }
+
   }
 
   const onMouseOut = (e) => {
     console.log('onMouseOut')
     e.preventDefault();
-    setTimeout(updateShow(false), 1000)
-    // updateShow(false)
+    // setTimeout(() => updateShow(false), 1000)
+    updateShow(false)
   }
+
   return (
-    <div className={styles['menu-bar-item']} style={menuBarItemStyles} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
-      <div 
+    <div className={styles['menu-bar-item']} style={menuBarItemStyles}
+      onMouseOver={onMouseOver} onMouseOut={onMouseOut} >
+      <a 
         href=''
-        legacyBehavior={false} 
         onClick={(e) => {
-          e.preventDefault(); 
-          e.stopPropagation();
+          event.preventDefault(); 
           console.log('{'+title+'} item clicked')
-          show[title] ? updateShow(false) : updateShow(true)
-        }}
-        >
+          show ? updateShow(false) : updateShow(true)
+        }}>
           {title}
-      </div>
-      <div className={styles['menu-bar-dropdown']} style={dropdownStyles}>
-      { show[title] ? menuItems?.map(menuItem => {
+      </a>
+      <div className={styles['menu-bar-dropdown']}  style={dropdownStyles}
+      onMouseOver={onMouseOver} onMouseOut={onMouseOut} >
+      { show ? menuItems?.map(menuItem => {
           let func = () => {}
           if (menuItem.onClick)
             func = menuItem.onClick
@@ -79,30 +88,30 @@ function MenuBarItem({
           let disabled = false
           if (menuItem.disabled)
             disabled = true
-
           return (
-            <div 
+            <a 
               key={menuItem.title}
               className={styles['menu-bar-dropdown-item']}
               style={disabled ? {'opacity': '0.6'} : null}
               href=''
-              legacyBehavior={false} 
               onClick={(e) => {
                 event.preventDefault(); 
                 console.log(`${menuItem.title} clicked`)
                 if (!disabled)
                   func()
-                  updateShow(false)
+                  updateShow(false)                
               }}
             >
               {menuItem.title}
-          </div>)
+          </a>)
         }) : null
       }
       </div>
-      {show[title] ? <div 
-        className={styles['background']} style={backgroundStyles}
-        onClick={(e) => {console.log('background clicked'); updateShow(false)}}>
+      {show ? <div 
+        className={styles['background']} 
+        onClick={(e) => {console.log('background clicked'); updateShow(false)}}
+         style={backgroundStyles}
+        >
           {}
         </div> : null
       }
@@ -114,10 +123,32 @@ export default function MenuBar({
   items={}, 
   styles={}
 }) {
-  // let [show, setShow] = useState(Object.keys(allMenuItems).reduce((acc, curr) => {
+ 
+  // console.log('items:', Object.keys(items).reduce((acc, curr) => {
   //   acc[curr] = false
   //   return acc
   // }, {}))
+  // let obj = {}
+  // Object.keys(items).map(i => obj[i] = false)
+  // console.log(obj)
+  
+
+  // useEffect(() => {
+  //   let showWhich = Object.keys(items).reduce((acc, curr) => {
+  //     acc[curr] = false
+  //     return acc
+  //   }, {})
+  //   console.log('show which:', showWhich)
+  //   setShow(showWhich)
+
+  // }, [items])
+  // const [show, setShow] = useState('test')
+  let [showAll, setShowAll] = useState(
+    Object.keys(items).reduce((acc, curr) => {
+      acc[curr] = false
+      return acc
+    }, {})
+  )
 
   const basicStyles = {
     display: 'flex', 
@@ -126,8 +157,8 @@ export default function MenuBar({
   }
   return (
     <div className={styles['menu-bar']} style={basicStyles}>
-     {/* {Object.keys(allMenuItems).map(key => {
-        let menu = allMenuItems[key]
+      {Object.keys(items).map(key => {
+        let menu = items[key]
         if (menu instanceof Array) {
           return (
               <MenuBarItem
@@ -135,8 +166,9 @@ export default function MenuBar({
                 title={key}
                 menuItems={menu}
                 styles={styles}
-                show={show}
-                setShow={setShow}
+                showAll={showAll}
+                // showMe={show[key]}
+                setShowAll={setShowAll}
               /> 
           )
         }
@@ -148,12 +180,13 @@ export default function MenuBar({
               onClick={menu['onClick']}
               justify={menu['justify']}
               styles={styles}
-              show={show}
-              setShow={setShow}  
+              showAll={showAll}
+              // showMe={show[key]}
+              setShowAll={setShowAll}
             />
           )
         }
-      })}*/}
+      })}
     </div>
   )
 }

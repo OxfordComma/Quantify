@@ -10,7 +10,9 @@ import Table from './ActiveTable.js'
 
 import Dropdown from './Dropdown.js'
 import DropdownFilter from './DropdownFilter.js'
+
 import MenuBar from './MenuBar.js'
+
 
 // const Table = require('./Table');
 export { 
@@ -19,5 +21,5 @@ export {
 	Legend, 
 	Table,
 	Dropdown, DropdownFilter,
-	MenuBar,
+	MenuBar
 };
