@@ -7,14 +7,17 @@ import { useState, useEffect } from 'react'
 
 
 
-export default function Dropdown({ options: opts , onDropdownChange, label, selected: selectedOption }) {
+export default function Dropdown({ 
+		options: opts , 
+		onDropdownChange = () => {}, 
+		label = '', 
+		selected: selectedOption 
+	}) {
 	let [selected, setSelected] = useState(selectedOption ?? 'all')
-	// let [unique, setUnique] = useState([])
 	const [options, setOptions] = useState(['all', ...opts])
 	
 	useEffect(() => {
 			setOptions(opts)
-		
 	}, [opts])
 
 	let onChange = (e) => {
@@ -27,7 +30,7 @@ export default function Dropdown({ options: opts , onDropdownChange, label, sele
 
 	return (
 		<span>
-			<label>{label ?? ''}</label>
+			<label>{label}</label>
 			<select value={selected} onChange={onChange}>
 			  { options.map(u => <option value={u.toString()}>{u.toString()}</option>)}
 			</select>

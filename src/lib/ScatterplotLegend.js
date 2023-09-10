@@ -29,6 +29,8 @@ function ScatterplotLegend({
 	yFormat=undefined,
 	xLabel=undefined,
 	yLabel=undefined,
+	showXLabel,
+	showYLabel,
 	radius=undefined,
 	fill=undefined,
 	color=undefined,
@@ -79,6 +81,8 @@ function ScatterplotLegend({
 				yFormat={yFormat}
 				xLabel={xLabel}
 				yLabel={yLabel}
+				showXLabel={showXLabel}
+				showYLabel={showYLabel}
 				radius={radius}
 				
 				fill={fill}

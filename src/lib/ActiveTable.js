@@ -6,13 +6,9 @@ import * as d3 from 'd3'
 
 
 export default function ActiveTable({ data: rawData, options, styles }) {
-	if (options === undefined) {
-		options = {}
-		const unique = Object.keys(rawData[0])
-		unique.map(u => {
-			options[u] = {}
-		})
-	}
+	let [data, setData] = useState(rawData)
+	let [sortCol, setSortCol] = useState(null)
+	let [sortDir, setSortDir] = useState(null)
 
 	function detectDataType(datum, accessor) {
  		if (accessor(datum) instanceof Date) 
@@ -22,51 +18,69 @@ export default function ActiveTable({ data: rawData, options, styles }) {
  			return typeof(accessor(datum))
  	}
 
+ 	// if (data.length == 0) {
+ 	// 	return <div></div>
+ 	// }
+
+	if (options === undefined) {
+		options = {}
+		const unique = Object.keys(data[0])
+		unique.map(u => {
+			options[u] = {}
+		})
+	}
+
 	let columns = Object.keys(options).map(c => {
 		let opt = options[c]
 
 		if (!opt.name) 
-			opt.name = [c]
+			opt.name = c
 
 		if (!opt.accessor) 
 			opt.accessor = d => d[c]
 
 		
 
-		if (opt.format && !opt.cell)
-			opt.cell = d => <div>{opt.format(d.row.original[c])}</div>
 
 		if ( detectDataType(rawData[0], opt.accessor) == 'date' && !opt.format) {
 			opt.format = d3.utcFormat("%Y-%m-%d")
 		}
-			
-		// Cell: d => <a href={d.row.original.uri}>{d.row.original.album.name}</a>,
 
-		return {
+		if (opt.format && !opt.cell)
+			opt.cell = d => <div>{opt.format(opt.accessor(d))}</div>
+
+		// Cell: d => <a href={d.row.original.uri}>{d.row.original.album.name}</a>,
+		let obj = {
 			Header: c,
 			sortType: 'basic',
 			backgroundColor: 'rgba(52, 52, 52, 0.8)',
-			...options[c]
+			...opt
 		}
-	})
-	rawData = rawData.map((d, index)=> {
-		return {
-			index: index,
-			...d
-		}
+
+		return obj
 	})
 	
-	let [data, setData] = useState(rawData)
-	let [sortCol, setSortCol] = useState(null)
-	let [sortDir, setSortDir] = useState(null)
 
+	
+	
+	
+	
+	
 	useEffect(() => {
+		rawData = rawData.map((d, index)=> {
+			return {
+				index: index,
+				...d
+			}
+		})
+
 		setData(rawData)
-	}, [rawData.length])
+	}, [rawData])
 
 	function onClickHeader(e) {
 		e.preventDefault();
-		let newSortCol = e.target.textContent.replace(/[↓↑]/, '').trim()
+		// let newSortCol = e.target.textContent.replace(/[▲▼]/, '').trim()
+		let newSortCol = e.target.id//.replace(/[▲▼]/, '').trim()
 		let newSortDir = sortDir
 		let newData = data
 

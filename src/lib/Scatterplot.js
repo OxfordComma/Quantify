@@ -22,8 +22,8 @@ import {
 } from 'd3';
 
 export default function Scatterplot({
-	x,
-	y,
+	x: rawX,
+	y: rawY,
 	keyBy,
 	hue,
 	size,
@@ -48,8 +48,10 @@ export default function Scatterplot({
 	yFormat=undefined,
 	xLabel=undefined,
 	yLabel=undefined,
+	showXLabel=true,
+	showYLabel=true,
 	radius=15,
-	fill=undefined,
+	fill,
 	color='green',
 	discreteColorScale=d3.schemeCategory10,
 	continuousColorScale=['yellow', 'red'],
@@ -94,38 +96,43 @@ export default function Scatterplot({
 
 
  	function instantiateX() {
- 		if(typeof(x) == 'string') {
+ 		let x = Object.assign({}, rawX)
+ 		if(typeof(rawX) == 'string') {
 			x = {
 				name: x,
 				// accessor: d => d[x.name],
 			}
 		}
-		else {
-			x = {
-				...x,
-			}
-		}
+		// else {
+		// 	x = {
+		// 		...x,
+		// 	}
+		// }
 
-		if (!x.accessor) {
+		if (!rawX.accessor) {
 			x.accessor = d => d[x.name]
 		}
 
-		if (!x.title) {
+		if (!rawX.title) {
 			x.title = x.name
 		}
 
-		if (xMin) {
-			x.min = xMin
-		}
-		else {
-			x.min = d3.min(data, d => +x.accessor(d))
+		if (rawX.min == undefined) {
+			if (xMin ) {
+				x.min = xMin
+			}
+			else {
+				x.min = d3.min(data, d => +x.accessor(d))
+			}
 		}
 
-		if (xMax) {
-			x.max = xMax
-		}
-		else {
-			x.max = d3.max(data, d => +x.accessor(d))
+		if (rawX.max == undefined) {
+			if (xMax) {
+				x.max = xMax
+			}
+			else {
+				x.max = d3.max(data, d => +x.accessor(d))
+			}
 		}
 
 
@@ -140,7 +147,7 @@ export default function Scatterplot({
 
 			if (scaleType == 'number' || scaleType == 'date')  {
 				domain = [x.min, x.max]
-				// console.log('x linear', domain)
+				console.log('x linear', domain)
 				x.scale = d3.scaleLinear()
 				x.span = x.max - x.min
 			}
@@ -186,7 +193,7 @@ export default function Scatterplot({
 			// }
 			
 
-			x.scale.domain(domain)
+			x.scale.domain(domain)//.nice()
 			x.scale.range([marginLeft, dimensions.drawWidth - marginRight])
 			// x.scale.nice()
 			if (!x.format) {
@@ -207,27 +214,27 @@ export default function Scatterplot({
   })
 
   function instantiateY() {
- 		if(typeof(y) == 'string') {
+  	let y = Object.assign({}, rawY)
+ 		if(typeof(rawY) == 'string') {
 			y = {
 				name: y,
 				// accessor: d => d[y],
 			}
 		}
-		else {
-			y = {
-				...y,
-			}
-
-		}
-		if (!y.accessor) {
+		// else {
+		// 	y = {
+		// 		...y,
+		// 	}
+		// }
+		if (!rawY.accessor) {
 			y.accessor = d => d[y.name]
 		}
 
-		if (!y.title) {
+		if (!rawY.title) {
 			y.title = y.name
 		}
 
-		if (y.scale) {
+		if (rawY.scale) {
 			y.scale = y.scale.copy()
 		}
 		else {
@@ -241,20 +248,23 @@ export default function Scatterplot({
 
 
 		// Update Domain
-		if (yMin) {
-			y.min = yMin
-		}
-		else {
-			y.min = d3.min(data, d => +y.accessor(d))
+		if (!rawY.min) {
+			if (yMin) {
+				y.min = yMin
+			}
+			else {
+				y.min = d3.min(data, d => +y.accessor(d))
+			}
 		}
 
-		if (yMax) {
-			y.max = yMax
+		if (!rawY.max) {
+			if (yMax) {
+				y.max = yMax
+			}
+			else {
+				y.max = d3.max(data, d => +y.accessor(d))	
+			}
 		}
-		else {
-			y.max = d3.max(data, d => +y.accessor(d))	
-		}
-		
 
 		// yAxisMin = Math.max(...[newYAxis.min, min].filter(Number.isFinite))
 		// yAxisMax = Math.min(...[newYAxis.max, max].filter(Number.isFinite))
@@ -387,7 +397,7 @@ export default function Scatterplot({
   	let newXAxis = instantiateX()
 
   	setXAxis(newXAxis)
-  }, [x, xMin, xMax, dimensions])
+  }, [data, rawX, xMin, xMax, dimensions])
 
 
 
@@ -395,7 +405,7 @@ export default function Scatterplot({
   	let newYAxis = instantiateY()
 		setYAxis(newYAxis)
 
-	}, [y, yMin, yMax, dimensions])
+	}, [data, rawY, yMin, yMax, dimensions])
 
 	useEffect(() => {
 		let newHueAxis = instantiateHue()
@@ -449,13 +459,13 @@ export default function Scatterplot({
 			circlesEnter.merge(circles)
 				.on('click', d => onClickChartItem(d))
 				.transition().duration(transitionSpeed)
-					.attr('fill', d => fill ? d[fill] : hueAxis ? hueAxis.scale( hueAxis.accessor(d)) : color)
+					.attr('fill', d => fill ? d[fill] : hue ? hueAxis.scale( hueAxis.accessor(d)) : color)
 					.attr('r', d => sizeAxis ? sizeAxis.scale( sizeAxis.accessor(d)) : radius)				
 					.attr('cx', d => xAxis.scale(xAxis.accessor(d)) )
 					.attr('cy', d => yAxis.scale(yAxis.accessor(d)) )
 					.style('fill-opacity', d => (dimensions.width >  0) ? 1 : 0)
-					.style('stroke', 'black')
-					.style('stroke-width', 0.5)
+					.style('stroke', 'white')
+					.style('stroke-width', 0.25)
 					.style('stroke-opacity', d => (dimensions.width > 0) ? 1 : 0)
 
 			// Use the .exit() and .remove() methods to remove elements that are no longer in the data
@@ -485,12 +495,12 @@ export default function Scatterplot({
 			// Graph width and height - accounting for margins
 			let xAxisFunction = d3.axisBottom()
 				.scale(xAxis.scale)
-				.ticks(xAxisTicks)
+				// .ticks(xAxisTicks)
 				.tickFormat(xAxis.format)
 
 			let yAxisFunction = d3.axisLeft()
 				.scale(yAxis.scale)
-				.ticks(yAxisTicks)
+				// .ticks(yAxisTicks)
 				.tickFormat(yAxis.format);
 
 			d3.select('.x-axis-g')
@@ -504,10 +514,14 @@ export default function Scatterplot({
 				.call(yAxisFunction)
 				.attr('font-family', null)
 
-	}, [xAxis, yAxis, sizeAxis, hueAxis, dimensions])
+	}, [data, xAxis, yAxis, sizeAxis, hueAxis, dimensions])
 
+	let scatterplotStyles = {
+		width: '100%',
+		height: '100%'
+	}
 	return (
-		<div>
+		<div style={scatterplotStyles}>
 		
 			<svg ref={d3Container} width='100%' height='100%' >
 				<g className='chart-container' >
@@ -518,13 +532,13 @@ export default function Scatterplot({
 					<g className='y-axis-g'
 						transform={`translate(${marginLeft}, ${0})`}></g>
 				</g>
-				<text className="x-axis-label" transform={`translate(${dimensions.width/2}, ${dimensions.height - 5})`}>
+				{showXLabel ? <text className="x-axis-label" transform={`translate(${dimensions.width/2}, ${dimensions.height - 5})`}>
 					{xAxis.title}
-				</text>
+				</text> : null}
 
-				<text className="y-axis-label" transform={`translate(${0}, ${15})`}>
+				{showYLabel ? <text className="y-axis-label" transform={`translate(${0}, ${15})`}>
 					{yAxis.title}
-				</text>
+				</text> : null}
 			
 			</svg>
 

@@ -41,8 +41,8 @@ function MenuBarItem({
   const menuBarItemStyles = {
     marginLeft: justify == 'right' ? 'auto' : '0px',
     zIndex: 10,
-    paddingLeft: '5px',
-    paddingRight: '5px',
+    // paddingLeft: '5px',
+    // paddingRight: '5px',
   }
 
   const onMouseOver = (e) => {
@@ -76,8 +76,7 @@ function MenuBarItem({
 
   return (
     <div className={styles['menu-bar-item']} style={menuBarItemStyles} onMouseOver={onMouseOver} onMouseOut={onMouseOut} >
-      <div
-        onClick={openMenuBar}>
+      <div onClick={openMenuBar} className={styles['menu-bar-title']}>
           {title}
       </div>
       <div className={styles['menu-bar-dropdown']}  style={dropdownStyles} onMouseOver={onMouseOver} onMouseOut={onMouseOut} >
@@ -87,7 +86,7 @@ function MenuBarItem({
             func = menuItem.onClick
 
           let disabled = false
-          if (menuItem.disabled == true)
+          if (menuItem.disabled === true)
             disabled = true
 
           return (
@@ -95,7 +94,12 @@ function MenuBarItem({
               key={menuItem.title}
               className={styles['menu-bar-dropdown-item']}
               style={disabled ? {'opacity': '0.6'} : null}
-              onClick={(e) => { onClickDropdownItem(e); func(); }}
+              onClick={(e) => { 
+                onClickDropdownItem(e); 
+                if (!disabled)  {
+                  func(e); 
+                }
+              }}
             >
               {menuItem.title}
           </div>)
@@ -118,26 +122,6 @@ export default function MenuBar({
   items={}, 
   styles={}
 }) {
- 
-  // console.log('items:', Object.keys(items).reduce((acc, curr) => {
-  //   acc[curr] = false
-  //   return acc
-  // }, {}))
-  // let obj = {}
-  // Object.keys(items).map(i => obj[i] = false)
-  // console.log(obj)
-  
-
-  // useEffect(() => {
-  //   let showWhich = Object.keys(items).reduce((acc, curr) => {
-  //     acc[curr] = false
-  //     return acc
-  //   }, {})
-  //   console.log('show which:', showWhich)
-  //   setShow(showWhich)
-
-  // }, [items])
-  // const [show, setShow] = useState('test')
   let [showAll, setShowAll] = useState(
     Object.keys(items).reduce((acc, curr) => {
       acc[curr] = false
