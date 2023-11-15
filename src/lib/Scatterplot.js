@@ -248,7 +248,7 @@ export default function Scatterplot({
 
 
 		// Update Domain
-		if (!rawY.min) {
+		if (rawY.min == undefined) {
 			if (yMin) {
 				y.min = yMin
 			}
@@ -257,7 +257,7 @@ export default function Scatterplot({
 			}
 		}
 
-		if (!rawY.max) {
+		if (rawY.max == undefined) {
 			if (yMax) {
 				y.max = yMax
 			}
@@ -277,7 +277,7 @@ export default function Scatterplot({
 		y.span = y.max - y.min
 		y.scale.domain([y.min, y.max])
 		y.scale.range([dimensions.height - marginBottom - xAxisMargin, marginTop])
-		y.scale.nice()
+		// y.scale.nice()
 
 		return y
  	}

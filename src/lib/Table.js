@@ -44,7 +44,6 @@ export default function Table({
 	const headerStyles = {
 		position: 'sticky',
   	top: '0px',
-  	backgroundColor: 'black',
   	cursor: 'pointer',
 	}
 
