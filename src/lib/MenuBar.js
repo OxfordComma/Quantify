@@ -43,6 +43,7 @@ function MenuBarItem({
     zIndex: 10,
     // paddingLeft: '5px',
     // paddingRight: '5px',
+    opacity: menuItems.every(m => m.disabled) ? 0.6 : 1
   }
 
   const onMouseOver = (e) => {
@@ -97,7 +98,7 @@ function MenuBarItem({
               onClick={(e) => { 
                 onClickDropdownItem(e); 
                 if (!disabled)  {
-                  func(e); 
+                  func(e);
                 }
               }}
             >
