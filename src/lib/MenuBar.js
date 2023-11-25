@@ -65,7 +65,9 @@ function MenuBarItem({
   const openMenuBar = (e) => {
     event.preventDefault(); 
     console.log('{'+title+'} item clicked')
-    show ? updateShow(false) : updateShow(true)
+    if (!(menuItems.every(m => m.disabled))) {
+      show ? updateShow(false) : updateShow(true)
+    }
   }
 
   const onClickDropdownItem = (e) => {
