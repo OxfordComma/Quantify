@@ -2,6 +2,62 @@
 
 import React from 'react'
 import { useState, useEffect } from 'react'
+
+export default function MenuBar({ 
+  items={}, 
+  styles={}
+}) {
+  let [showAll, setShowAll] = useState(
+    Object.keys(items).reduce((acc, curr) => {
+      acc[curr] = false
+      return acc
+    }, {})
+  )
+
+  const basicStyles = {
+    display: 'flex', 
+    flex: '0 0 0',
+    flexDirection: 'row',
+  }
+  return (
+    <div className={styles['menu-bar']} style={basicStyles}>
+      {Object.keys(items)
+        .filter(key => !(items[key] instanceof Array && items[key].every(m => m.disabled) ) )
+        .map(key => {
+        let menu = items[key]
+
+        if (menu instanceof Array) {
+          return (
+              <MenuBarItem
+                key={key}
+                title={key}
+                menuItems={menu}
+                styles={styles}
+                showAll={showAll}
+                // showMe={show[key]}
+                setShowAll={setShowAll}
+              /> 
+          )
+        }
+        else {
+          return (
+            <MenuBarItem
+              key={key}
+              title={key}
+              onClick={menu['onClick']}
+              justify={menu['justify']}
+              styles={styles}
+              showAll={showAll}
+              // showMe={show[key]}
+              setShowAll={setShowAll}
+            />
+          )
+        }
+      })}
+    </div>
+  )
+}
+
 function MenuBarItem({ 
   title, 
   menuItems,
@@ -65,9 +121,9 @@ function MenuBarItem({
   const openMenuBar = (e) => {
     event.preventDefault(); 
     console.log('{'+title+'} item clicked')
-    if (!(menuItems.every(m => m.disabled))) {
+    // if (!(menuItems.every(m => m.disabled))) {
       show ? updateShow(false) : updateShow(true)
-    }
+    // }
   }
 
   const onClickDropdownItem = (e) => {
@@ -117,58 +173,6 @@ function MenuBarItem({
           {}
         </div> : null
       }
-    </div>
-  )
-}
-
-export default function MenuBar({ 
-  items={}, 
-  styles={}
-}) {
-  let [showAll, setShowAll] = useState(
-    Object.keys(items).reduce((acc, curr) => {
-      acc[curr] = false
-      return acc
-    }, {})
-  )
-
-  const basicStyles = {
-    display: 'flex', 
-    flex: '0 0 0',
-    flexDirection: 'row',
-  }
-  return (
-    <div className={styles['menu-bar']} style={basicStyles}>
-      {Object.keys(items).map(key => {
-        let menu = items[key]
-        if (menu instanceof Array) {
-          return (
-              <MenuBarItem
-                key={key}
-                title={key}
-                menuItems={menu}
-                styles={styles}
-                showAll={showAll}
-                // showMe={show[key]}
-                setShowAll={setShowAll}
-              /> 
-          )
-        }
-        else {
-          return (
-            <MenuBarItem
-              key={key}
-              title={key}
-              onClick={menu['onClick']}
-              justify={menu['justify']}
-              styles={styles}
-              showAll={showAll}
-              // showMe={show[key]}
-              setShowAll={setShowAll}
-            />
-          )
-        }
-      })}
     </div>
   )
 }
