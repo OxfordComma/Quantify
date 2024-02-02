@@ -39,11 +39,22 @@ export default function MenuBar({
               /> 
           )
         }
+        if (typeof menu == 'string') {
+          return (
+            <MenuBarItem
+              key={key}
+              title={menu}
+              styles={styles}
+              showAll={showAll}
+              setShowAll={setShowAll}
+            />
+          )
+        }
         else {
           return (
             <MenuBarItem
               key={key}
-              title={key}
+              title={menu['title'] ?? key}
               onClick={menu['onClick']}
               justify={menu['justify']}
               styles={styles}
@@ -61,6 +72,7 @@ export default function MenuBar({
 function MenuBarItem({ 
   title, 
   menuItems,
+  onClick,
   justify,
   showAll,
   setShowAll,
@@ -99,7 +111,7 @@ function MenuBarItem({
     zIndex: 10,
     // paddingLeft: '5px',
     // paddingRight: '5px',
-    opacity: menuItems.every(m => m.disabled) ? 0.6 : 1
+    opacity: menuItems?.every(m => m.disabled) ? 0.6 : 1
   }
 
   const onMouseOver = (e) => {
@@ -112,9 +124,8 @@ function MenuBarItem({
   }
 
   const onMouseOut = (e) => {
-    console.log('onMouseOut')
+    // console.log('onMouseOut')
     e.preventDefault();
-    // setTimeout(() => updateShow(false), 1000)
     updateShow(false)
   }
 
@@ -129,13 +140,12 @@ function MenuBarItem({
   const onClickDropdownItem = (e) => {
     event.preventDefault(); 
     console.log(`${e.target.key} clicked`)
-    // console.log(`${menuItem.title} clicked`)
-      updateShow(false)
+    updateShow(false)
   }
 
   return (
     <div className={styles['menu-bar-item']} style={menuBarItemStyles} onMouseOver={onMouseOver} onMouseOut={onMouseOut} >
-      <div onClick={openMenuBar} className={styles['menu-bar-title']}>
+      <div onClick={onClick ?? openMenuBar} className={styles['menu-bar-title']}>
           {title}
       </div>
       <div className={styles['menu-bar-dropdown']}  style={dropdownStyles} onMouseOver={onMouseOver} onMouseOut={onMouseOut} >
