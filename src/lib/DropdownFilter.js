@@ -11,16 +11,32 @@ export default function DropdownFilter({
 		filters, 
 		setFilters, 
 		column,
+		label,
+		accessor,
 		selected: selectedId
 	}) {
 	let [selected, setSelected] = useState(filters[column] ?? 'all')
 	let [items, setItems] = useState([])
 	
 	useEffect(() => {
-		let subset = data.map(d => d[column])
+		let subset 
+		console.log('filter', selected, column, data, filteredData)
+		// if (selected == 'all') {
+		// 	subset = data.map(d => d[column])
+		// }
+		if (accessor == undefined) {
+			accessor = d => d[column]
+		}
+		if (selected != 'all') {
+			subset = data.map(accessor)
+		}
+		else {
+			subset = data.map(accessor)
+
+		}
 		// console.log(subset)
 		setItems(['all', ...new Set(subset)])
-	}, [data, column])
+	}, [data, filteredData, column, filters])
 
 	useEffect(() => {
 		// console.log('effect used', selected, filters)
@@ -57,6 +73,7 @@ export default function DropdownFilter({
 	return (
 		<Dropdown
 			items={items}
+			label={label}
 			onDropdownChange={setSelected}
 			selected={selected.toString()}
 		/>
