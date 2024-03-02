@@ -10,10 +10,12 @@ export default function Table({
 	columns, 
 	sortCol, 
 	sortDir, 
+	title,
+	titleAlign='center',
 	styles={}, 
-	onClickHeader 
+	onClickHeader=()=>{},
+	onClickCell=(d)=>{ console.log('onClickCell', d)},
 }) {
-
 	function ShowSortDirection({sortDir, sorting}) {
 		let rowStyle = {
 			display: 'flex', 
@@ -25,12 +27,12 @@ export default function Table({
 		}
 		return (<div style={rowStyle}>
  			<div style={{
- 				opacity:  (sortDir=='asc' && sorting)?1:0.6,
+ 				opacity:  (sortDir=='asc' && sorting)?1:0.25,
  				...arrowStyle, 
  			}}>▲</div>
  			<div style={{
  				...arrowStyle, 
- 				opacity:  (sortDir=='desc' && sorting)?1:0.6,
+ 				opacity:  (sortDir=='desc' && sorting)?1:0.25,
  			}}>▼</div>
 		</div>)
 	}
@@ -39,6 +41,10 @@ export default function Table({
 	// For sticky headers
 	const tableStyles = {
 	  borderCollapse: 'collapse',
+	}
+
+	const titleStyles = {
+		'text-align': titleAlign,
 	}
 
 	const headerStyles = {
@@ -52,6 +58,11 @@ export default function Table({
 		flexDirection: 'row',
 	}
 
+	const rowStyles = {
+		'height': '25px',
+		'maxHeight': '25px',
+	}
+
 	let tableScrollWindowStyle = {
 		width: '100%',
 		height: '100%',
@@ -60,9 +71,10 @@ export default function Table({
 
 	return (
 		<div className={styles['table-container']} style={tableScrollWindowStyle}>
+			<div className={styles['table-title']} style={titleStyles}>{title}</div>
 			<table className={styles['table']} style={tableStyles}>
-				<thead className={styles['tablehead']} style={headerStyles}>
-					<tr className={styles['row']}  id='tablerow'>
+				<thead className={styles['table-head']} style={headerStyles}>
+					<tr className={styles['row']}id='tablerow'>
 						{columns.map(column => {
 							{/*console.log('column:', column)*/}
 							return(
@@ -81,10 +93,10 @@ export default function Table({
 				<tbody className={styles['tablebody']}>
 					{data.map(d => {
 						return (
-							<tr>
+							<tr className={styles['row']} style={rowStyles}>
 								{columns.map(column => {
 									return (
-										<td className={styles['cell']}>
+										<td className={styles['cell']} onClick={column['onClick'] ?? onClickCell}>
 											{
 												column['cell'] ? 
 												column['cell'](d) : 
@@ -100,6 +112,7 @@ export default function Table({
 					})}
 				</tbody>
 			</table>
+			
 		</div>
 	)
 }
