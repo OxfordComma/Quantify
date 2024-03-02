@@ -28,11 +28,11 @@ export default function Dropdown({
 		setSelected(val)
 	}
 
-		return (
+	return (
 		<span>
 			<label>{label}</label>
 			<select value={selected} onChange={onChange}>
-			  { items.map(u => <option value={id(u)}>{accessor(u).toString()}</option>)}
+			  { items.map(u => <option value={id(u)}>{String(accessor(u))}</option>)}
 			</select>
 		</span>
 	)

@@ -78,7 +78,7 @@ export default function Table({
 						{columns.map(column => {
 							{/*console.log('column:', column)*/}
 							return(
-								<th className={styles['cell']} >
+								<th className={`${styles['header-cell']} ${styles['cell']}`} >
 									<div id={column['name']} style={column['width'] ? {...headerCellStyles, width: column['width']} : headerCellStyles} onClick={onClickHeader}>
 										<div id={column['name']}>
 									 		{column['name']}
@@ -90,13 +90,13 @@ export default function Table({
 						)})}
 					</tr>
 				</thead>
-				<tbody className={styles['tablebody']}>
+				<tbody className={styles['table-body']}>
 					{data.map(d => {
 						return (
 							<tr className={styles['row']} style={rowStyles}>
 								{columns.map(column => {
 									return (
-										<td className={styles['cell']} onClick={column['onClick'] ?? onClickCell}>
+										<td className={styles['cell']} style={{width: column['width']}} onClick={column['onClick'] ?? onClickCell}>
 											{
 												column['cell'] ? 
 												column['cell'](d) : 

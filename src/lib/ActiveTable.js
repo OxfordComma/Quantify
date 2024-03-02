@@ -9,7 +9,7 @@ export default function ActiveTable({
 	data: rawData, 
 	title,
 	options, 
-	styles 
+	styles
 }) {
 	let [data, setData] = useState(rawData)
 	let [sortCol, setSortCol] = useState(null)
@@ -38,12 +38,13 @@ export default function ActiveTable({
 	}
 
 	let columns
-	if (data.length == 0) {
-		columns = []
-	}
-	else {
+	// if (data.length == 0) {
+	// 	columns = []
+	// }
+	// else {
 		columns = Object.keys(options).map(c => {
 			let opt = options[c]
+			console.log('opt:', opt, options, c)
 
 			if (typeof opt == 'string') {
 				opt = {
@@ -58,10 +59,8 @@ export default function ActiveTable({
 			if (!opt.accessor) 
 				opt.accessor = d => d[c] 
 
-			
-
-
-			if ( detectDataType(rawData[0], opt.accessor) == 'date' && !opt.format) {
+	
+			if ( data.length > 0 && detectDataType(data[0], opt.accessor) == 'date' && !opt.format) {
 				opt.format = d3.utcFormat("%Y-%m-%d")
 			}
 
@@ -78,7 +77,7 @@ export default function ActiveTable({
 
 			return obj
 		})
-	}
+	// }
 	
 	
 	useEffect(() => {
@@ -95,8 +94,9 @@ export default function ActiveTable({
 	function sortData(data, column, direction) {
 		let newData = data
 		const col = columns.find(c => c['name'] == column)
+		console.log('col:', col)
 		let accessor
-		if (col.sort) {
+		if ('sort' in col) {
 			accessor = col.sort
 		}
 		else {
@@ -104,14 +104,29 @@ export default function ActiveTable({
 		}
 
 		if (direction == null ) {
-			newData = newData.sort((a, b) => a['index'] > b['index'] ? 1 : -1) 
+			newData = newData.sort((a, b) => {
+				if (a === null ) return 1;
+				if (b === null) return -1;
+
+				return a['index'] > b['index'] ? 1 : -1
+			})
 		}
 		else if (direction === 'asc') {
-			newData = newData.sort((a, b) => accessor(a) > accessor(b) ? 1 : -1 )
-			
+			newData = newData.sort((a, b) => {
+				console.log('a', accessor(a), accessor(b))
+				if (accessor(a) === null) return 1;
+				if (accessor(b) === null) return -1;
+				
+				return accessor(a) > accessor(b) ? 1 : -1 
+			})
 		}
 		else if (direction === 'desc') {
-			newData = newData.sort((a, b) => accessor(a) < accessor(b) ? 1 : -1 )
+			newData = newData.sort((a, b) => {
+				if (accessor(a) === null) return 1;
+				if (accessor(b) === null) return -1;
+				
+				return accessor(a) < accessor(b) ? 1 : -1 
+			})
 		}
 
 		return newData
