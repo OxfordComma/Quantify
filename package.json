@@ -1,10 +1,6 @@
 {
   "name": "quantifyjs",
-<<<<<<< HEAD
   "version": "0.4.26",
-=======
-  "version": "0.4.23",
->>>>>>> parent of c2ee059... 0.4.24
   "description": "Plotting library for NodeJS.",
   "type": "module",
   "main": "dist/index.js",
