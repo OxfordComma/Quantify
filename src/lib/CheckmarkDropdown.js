@@ -23,7 +23,7 @@ export default function CheckmarkDropdown({
         isMulti={true}
         placeholder={placeholder ?? selected}
         styles={{
-        	// container: () => {return {'width': '100%', height: '100%'}}
+        	container: () => {return {'width': '100%', height: '100%'}}
         }}
       />
     </div>
