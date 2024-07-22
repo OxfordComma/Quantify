@@ -17,6 +17,7 @@ export default function DropdownSelect({
 		label,
 		// selected: selectedId
 		placeholder,
+		styles,
 	}) {
 	
 	let [selected, setSelected] = useState([
@@ -108,6 +109,7 @@ export default function DropdownSelect({
 			selected={selected}
 			setSelected={setSelected}
 			placeholder={placeholder}
+			styles={styles}
 			// onDropdownChange={setSelected}
 			// selected={selected.toString()}
 		/>

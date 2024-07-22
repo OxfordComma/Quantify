@@ -10,9 +10,31 @@ export default function CheckmarkDropdown({
 		setSelected,
 
 		placeholder,
+		styles,
 	}) {
 
 	const options = items.map(i => { return {value: i, label: i} })
+
+	const colorStyles = {
+	  control: (styles, { }) => {
+	    return {
+	      ...styles,
+	      backgroundColor: 'black'
+	    };
+	  },
+	  menuList: (styles, { }) => {
+	    return {
+	      ...styles,
+	      backgroundColor: 'black'
+	    };
+	  },
+	  option: (styles, { isFocused }) => {
+	    return {
+	      ...styles,
+	      backgroundColor: isFocused ? 'gray' : 'black'
+	    };
+	  }
+	};
 	
 	return (
 		<div style={{width: '100%'}}>
@@ -22,9 +44,9 @@ export default function CheckmarkDropdown({
         options={options}
         isMulti={true}
         placeholder={placeholder ?? selected}
-        styles={{
-        	// container: () => {return {'width': '100%', height: '100%'}}
-        }}
+        styles={
+        	colorStyles
+        }
       />
     </div>
 	)
