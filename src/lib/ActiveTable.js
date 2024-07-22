@@ -9,7 +9,8 @@ export default function ActiveTable({
 	data: rawData, 
 	title,
 	options, 
-	styles
+	styles,
+	highlight,
 }) {
 	let [data, setData] = useState(rawData)
 	let [sortCol, setSortCol] = useState(null)
@@ -169,7 +170,7 @@ export default function ActiveTable({
 	}
 
 	return (
-		<Table
+		data.length == 0 ? null : <Table
 			data={data}
 			columns={columns}
 			title={title}
@@ -177,6 +178,7 @@ export default function ActiveTable({
 			sortDir={sortDir}
 			styles={styles}
 			onClickHeader={onClickHeader}
+			highlight={highlight}
 		/>
 	)
 }
