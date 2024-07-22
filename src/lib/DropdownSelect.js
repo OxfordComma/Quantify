@@ -48,21 +48,25 @@ export default function DropdownSelect({
 	
 	useEffect(() => {
 		let subset 
-		if (selected == 'all') {
-			subset = data.map(d => d[column])
-		}
+		// if (selected == 'all') {
+		// 	subset = data.map(d => d[column])
+		// }
 		if (accessor == undefined) {
 			accessor = d => d[column]
 		}
-		if (selected != 'all') {
-			subset = data.map(accessor)
-		}
-		else {
+		// if (selected != 'all') {
+		// 	subset = data.map(accessor)
+		// }
+		// else {
 			subset = data.map(accessor)
 
-		}
+		// }
 		// console.log(subset)
-		setItems(['all'].concat([...new Set(subset)].sort()) )
+		setItems(
+			// ['all'].concat(
+				[...new Set(subset)].sort()
+			// )
+		)
 	}, [data, column, ]) //filteredData, filters
 
 	// useEffect(() => {
