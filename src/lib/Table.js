@@ -15,7 +15,6 @@ export default function Table({
 	styles={}, 
 	onClickHeader=()=>{},
 	onClickCell=(d)=>{ console.log('onClickCell', d)},
-	highlight,
 }) {
 	function ShowSortDirection({sortDir, sorting}) {
 		let rowStyle = {
@@ -68,7 +67,7 @@ export default function Table({
 		width: '100%',
 		height: '100%',
 		overflow: 'scroll',
-		margin: '5px',
+		padding: '5px',
 	}
 
 	return (
@@ -95,7 +94,7 @@ export default function Table({
 				<tbody className={styles['table-body']}>
 					{data.map(d => {
 						return (
-							<tr className={`${styles['row']} ${(highlight && d[highlight]) ? styles['highlighted-row'] : null}`} style={rowStyles}>
+							<tr className={styles['row']} style={rowStyles}>
 								{columns.map(column => {
 									return (
 										<td className={styles['cell']} style={{width: column['width']}} onClick={column['onClick'] ?? onClickCell}>
