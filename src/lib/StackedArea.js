@@ -20,6 +20,7 @@ import {
   csv
 } from 'd3';
 
+import LegendGroup from './LegendGroup'
 
 export default function StackedArea({
   data,
@@ -458,12 +459,259 @@ export default function StackedArea({
     //       .attr('z-index', 10)
   }, [dimensions, seriesData, orientation, offset])
 
+
+
+
+
+
+
+
+  const legendRef = useRef()
+
+  function detectScaleType(datum, accessor) {
+    if (accessor(datum) instanceof Date) 
+      return 'date'
+
+    else 
+      return typeof(accessor(datum))
+  }
+
+  let by = stackBy
+
+  let format=d3.format('.0f')
+  let title = ''
+  let margin={
+    left: 0,
+    right: 0,
+    top: 10,
+    bottom: 0
+  }
+  let ticks=10
+  let radius=5
+
+  
+  function instantiateBy() {
+    if (typeof(by) == 'string') {
+      by = {
+        name: by,
+      }
+    }
+    else {
+      by = {
+        ...by,  
+      }
+      
+    }
+    if (!by.accessor) {
+      by.accessor = d => d[by.name]
+    }
+
+    if (by.scale) {
+      by.scale = by.scale.copy()
+    }
+    else {
+      let scaleType = detectScaleType(data[0], by.accessor)
+      console.log('legend scale type:', scaleType, by.accessor(data[0]))
+
+      if (scaleType == 'number' || scaleType == 'date') {
+        by.scale = d3.scaleLinear(colorScale ?? by.colorScale ?? continuousColorScale)
+        if (min) {
+          by.min = min
+        }
+        else {
+          by.min = d3.min(data, d => +by.accessor(d))
+
+        }
+
+        if (max) {
+          by.max = max
+        }
+        else {
+          by.max = d3.max(data, d => +by.accessor(d))
+        }
+        
+        by.scale.domain([by.min, by.max])
+        by.span = by.max - by.min
+        by.format = format
+      }
+      else {
+        by.scale = d3.scaleOrdinal(colorScale ?? by.colorScale ?? discreteColorScale)
+        let discreteValues = [...new Set(data.map(by.accessor))]//.sort()
+        by.scale.domain(discreteValues)
+        by.span = undefined
+        by.format = format
+      }
+
+      if (scaleType == 'date') {
+        by.format = dateFormat
+      }
+    }
+    return by
+
+  }
+  
+  const [byAxis, setByAxis] = useState(() => {
+    return instantiateBy()
+  })
+
+  
+  useEffect(() => {
+    let newByAxis = instantiateBy()
+
+      setByAxis(newByAxis)
+  }, [by])
+
+
+  useEffect(() => {
+
+
+    console.log('legend SLL:', selectedLegendList)
+    let dateLegendFormat = byAxis.format ?? dateFormat
+    let dateLegendFunc = ({ i, genLength, generatedLabels }) => dateLegendFormat(generatedLabels[i])
+    
+    let scaleType = detectScaleType(data[0], byAxis.accessor)
+    console.log('scale type:', scaleType)
+
+    if (scaleType != 'number' && scaleType != 'date') {
+      ticks = [...new Set(data.map(d => byAxis.accessor(d)))].length
+    }
+    else {
+      ticks = (byAxis.scale.domain()[1] - byAxis.scale.domain()[0]) % 10 + 1
+    }
+
+    let selection = d3.select(legendRef.current)
+
+
+    // var legendLinear = legendColor()
+    //  .labelFormat(scaleType == 'date' ? format : byAxis.format)
+    //  .labels(scaleType == 'date' ? dateLegendFunc : byAxis.cell ?? undefined
+    //  )
+    //   .shapeWidth(30)
+    //   .cells(ticks)
+    //   .title(byAxis.name)
+    //   .orient(orientation)
+    //   .scale(byAxis.scale)
+    //  .on('cellclick', d => onClickLegend(d))
+        
+    //  selection.selectAll(".legendLinear").remove()
+
+    // Title
+    // let t = selection.selectAll('.title').data([byAxis.name])
+      
+    // t.enter().append('g')
+    //    .append('text')
+    //      .text(byAxis.name)
+
+    let spacing = 25
+
+    var l = selection.selectAll(".legend-container").data([null])
+      .enter().append("g")
+        .attr("class", "legend-container")
+        .on('click', onClickBackground)
+      //    // .attr("transform", "translate(20,20)")
+          // .call(legendLinear)
+
+    let titleText = l.selectAll('.title').data([byAxis.name])
+
+
+    titleText.enter().append('g')
+      .attr('class', 'title')
+        .append('text').text(title ? byAxis.name : '')
+        .attr('transform', `translate(${margin.left}, ${margin.top})`)
+
+    const legendItems = l//selection.select('.legend-container')
+      .selectAll('.legend-item').data(byAxis.scale.domain());
+    
+    const legendItemsEnter = legendItems
+      .enter().append('g')
+        .attr('class', 'legend-item')
+        // .attr('opacity', 1)
+        .on('click', onClick)
+
+    legendItems.exit().remove()
+    
+
+    legendItemsEnter.append('circle')
+      .merge(legendItems.select('circle'))
+        .attr('r', radius)
+        .attr('fill', d => byAxis.scale(d))
+        // .attr('fill-opacity', 1)
+    
+    legendItemsEnter.append('text')
+      .merge(legendItems.select('text'))   
+        .text(d => d)
+        .attr('id', d => d)
+        .attr('dy', '0.32em')
+        .attr('x', radius * 2)
+        .attr('text-anchor', 'start')
+
+
+
+        console.log(selectedLegendList)
+    legendItemsEnter.merge(legendItems)
+      // .transition().duration(350)
+      .attr('transform', (d, i) => {
+        var textLengths = d3.selectAll('.legend-item').selectAll('text').nodes().map(n => n.getComputedTextLength())
+        //                  Each circle + some padding
+        // var totalWidth = this.props.direction == 'horizontal' ? 
+        //  this.props.radius * 4 * textLengths.length + d3.sum(textLengths) + 20 : 
+        //  this.props.radius * 4 + d3.max(textLengths) + 20
+
+        if (orientation == 'horizontal') {
+          return `translate(${ offset + (radius * 4 * i) + d3.sum(textLengths.slice(0, i)) }, 0)`
+        }
+
+        if (orientation == 'vertical') {
+          return `translate(${ offset }, ${ (radius * i * 4) + (title ? 25 : 0) })`
+        }
+
+        else {
+          return `translate(${margin.left}, ${margin.top})`
+        }
+
+      })
+      
+      .attr('fill', d => console.log(selectedLegendList.length == 0 || selectedLegendList.includes(d) ))
+
+      // let legendItems = l.selectAll('.legend-items').data([null])
+      //  .enter().append('g')
+      //    .attr('class', 'legend-items')
+
+      // legendItems.selectAll('.legend-item').data(byAxis.scale.domain())
+      //    .enter().append('text').text(d => d)
+      //      .attr('transform', (d, i) => `translate(0, ${spacing * i})`)
+
+  }, [byAxis, title])
+
+  useEffect( () => {
+    let selection = d3.select(legendRef.current)
+    const legendItems = selection.select('.legend-container')
+      .selectAll('.legend-item')
+    
+    legendItems
+      .transition().duration(200)
+      .attr('opacity', d => { 
+        let opacity = (selectedLegendList.length == 0 || selectedLegendList.includes(d) ) ? 1 : 0.1
+        console.log('opacity:', opacity); 
+        return opacity
+      } )
+
+  }, [selectedLegendList])
+
+
+
+
+
+
+
   
   
 
   return (
     <svg id='stacked-area-artist-svg' style={{'width': '100%', 'height': '100%'}} ref={d3Container}>
-      <g class='stacked-area-container'>
+
+    <g class='stacked-area-container'>
+
         <g className='stacked-area'>
 
         </g>
@@ -486,6 +734,23 @@ export default function StackedArea({
         </text>*/}
           {/*<g transform={`translate(${dimensions.width/2},0)`}>{title}</g>*/}
       </g>
-    </svg>
+        <LegendGroup
+          by={stackBy}
+          data={data}
+          selectedLegendList={selectedLegendList}
+          onClick={onClick}
+          onClickBackground={onClickBackground}
+          colorScale={colorScale}
+          title={''}
+          // discreteColorScale={d3.interpolateRainbow}
+          // min={props.legendMin}
+          // max={props.legendMax}
+          // ticks={props.legendTicks}
+          // format={props.legendFormat}
+          // nice={'nice'}
+          drawWidth={dimensions.drawWidth}
+          fontSize={fontSize}
+        />
+      </svg>
   )
 };

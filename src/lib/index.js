@@ -10,6 +10,7 @@ import Table from './ActiveTable.js'
 
 import Dropdown from './Dropdown.js'
 import DropdownFilter from './DropdownFilter.js'
+import DropdownSelect from './DropdownSelect.js'
 
 import MenuBar from './MenuBar.js'
 
@@ -20,6 +21,6 @@ export {
 	StackedArea, StackedAreaLegend,
 	Legend, 
 	Table,
-	Dropdown, DropdownFilter,
+	Dropdown, DropdownFilter, DropdownSelect,
 	MenuBar
 };

@@ -20,7 +20,6 @@ export default function DropdownFilter({
 	
 	useEffect(() => {
 		let subset 
-		console.log('filter', selected, column, data, filteredData)
 		// if (selected == 'all') {
 		// 	subset = data.map(d => d[column])
 		// }

@@ -1,4 +1,3 @@
-'use client'
 import React from 'react'
 import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 
@@ -30,8 +29,11 @@ export default function Legend({
 	offset=25,
 	selectedLegendList=[],
 	title,
+	drawWidth=0,
+	fontSize='1em',
 }) {
 	const legendRef = useRef()
+	const legendSubRef = useRef()
   const [dimensions, setDimensions] = useState({ width: 100, height: 100, drawWidth: 100, drawHeight: 100 });
 
 	function detectScaleType(datum, accessor) {
@@ -113,8 +115,8 @@ export default function Legend({
 	}, [by])
 
 	function handleResize() {
-    const width = legendRef.current?.clientWidth
-    const height = legendRef.current?.clientHeight
+    const width = legendSubRef.current?.clientWidth
+    const height = legendSubRef.current?.clientHeight
 
     const dimensions = {
       width: width,
@@ -177,8 +179,8 @@ export default function Legend({
 		let spacing = 25
 
 		var l = selection.selectAll(".legend-container").data([null])
-			.enter().append("g")
-			  .attr("class", "legend-container")
+			// .enter().append("g")
+			//   .attr("class", "legend-container")
 		  	.on('click', onClickBackground)
 			// 	  // .attr("transform", "translate(20,20)")
 				  // .call(legendLinear)
@@ -273,9 +275,21 @@ export default function Legend({
 	if (data.length == 0)
 		return null
 
+	let numCharacters = (data.length != 0 && byAxis != undefined)
+		? data.map(byAxis.accessor).reduce((acc, curr) => {
+			// console.log(acc, curr)
+			return Math.max(acc, curr.length);
+		}, 0) 
+		: -1
+
+	let fontSizeMultiplier = parseInt(fontSize.replace('em', '')) / 6;
+
+	let translationDistance = numCharacters * fontSizeMultiplier
+	console.log('translationDistance', numCharacters, fontSizeMultiplier)
+
 	return (
-		<svg width="100%" height="100%" onClick={onClickBackground} >
-			<g ref={legendRef} className='legend' transform={`translate(${margin.left}, ${margin.top})`} />
-		</svg>
+			<g ref={legendRef} className='legend' transform={`translate(${drawWidth - (translationDistance + drawWidth * 0.1)+ margin.left}, ${margin.top})`} >
+				<g ref={legendSubRef} className='legend-container'/>
+			</g>
 	)
 }

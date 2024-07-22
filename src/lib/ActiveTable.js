@@ -30,6 +30,7 @@ export default function ActiveTable({
 	if (options === undefined) {
 		options = {}
 		if (data.length > 0) {
+				console.log('Creating headers:', data)
 				const unique = Object.keys(data[0])
 				unique.map(u => {
 					options[u] = {}
@@ -44,7 +45,7 @@ export default function ActiveTable({
 	// else {
 		columns = Object.keys(options).map(c => {
 			let opt = options[c]
-			console.log('opt:', opt, options, c)
+			// console.log('opt:', opt, options, c)
 
 			if (typeof opt == 'string') {
 				opt = {
@@ -94,7 +95,7 @@ export default function ActiveTable({
 	function sortData(data, column, direction) {
 		let newData = data
 		const col = columns.find(c => c['name'] == column)
-		console.log('col:', col)
+		// console.log('col:', col)
 		let accessor
 		if ('sort' in col) {
 			accessor = col.sort
@@ -113,7 +114,7 @@ export default function ActiveTable({
 		}
 		else if (direction === 'asc') {
 			newData = newData.sort((a, b) => {
-				console.log('a', accessor(a), accessor(b))
+				// console.log('a', accessor(a), accessor(b))
 				if (accessor(a) === null) return 1;
 				if (accessor(b) === null) return -1;
 				

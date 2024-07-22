@@ -9,7 +9,7 @@ export default function Dropdown({
 		accessor = d => d,
 		onDropdownChange = () => {}, 
 		label = '', 
-		selected: selectedId
+		selected: selectedId,
 	}) {
 	
 	let [selected, setSelected] = useState(id(selectedId) ?? id(items[0]))
@@ -31,7 +31,7 @@ export default function Dropdown({
 	return (
 		<span>
 			<label>{label}</label>
-			<select value={selected} onChange={onChange}>
+			<select value={selected} onChange={onChange} >
 			  { items.map(u => <option value={id(u)}>{String(accessor(u))}</option>)}
 			</select>
 		</span>

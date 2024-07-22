@@ -41,30 +41,35 @@ export default function StackedAreaLegend({
 	xTickOffset,
 	yTickOffset,
 	fontSize,
-	fontFamily
+	fontFamily,
+	styles,
 
 }) {
 	
 	const [selectedLegendList, setSelectedLegendList] = useState([ ])
 	console.log('Rendering data', data)
 
-	let styles = {
+	let baseStyles = {
 		'container': {
 			'width': '100%',
 			'height': '100%',
 			'overflow': 'hidden',
 
 			'display': 'flex',
-			'flex-direction': 'row',
 
 		},
 
 		'stacked-area': {
-			'flex': 4,
+			// 'flex': 4,
+			width: '100%',
 		},
 
 		'legend': {
-			'flex': 1,
+			// 'position': 'fixed',
+			// right: 0,
+			'width': '100%',
+			'height': '100%',
+			// 'flex': 1,
 			'overflow-y': 'scroll',
 			'margin': 0,
 			'cursor': 'pointer',
@@ -150,8 +155,8 @@ export default function StackedAreaLegend({
   // 	.range(stackRange)
 
 
-	return <div style={styles['container']}>
-		<div style={styles['stacked-area']}>
+	return <div style={baseStyles['container']} className={styles['legend-container']}>
+		<div style={baseStyles['stacked-area']}  className={styles['stacked-area']}>
 			{stackedData.length > 0 ? (
 				<StackedArea
 					data={data}
@@ -190,7 +195,7 @@ export default function StackedAreaLegend({
 			/>
 		) : <div></div>}
 	</div>
-	<div style={styles['legend']}>
+	{/*<div style={baseStyles['legend']} className={styles['legend']}>
 		{data.length > 0 ? <Legend
 			by={stackBy}
 			data={data}
@@ -206,7 +211,7 @@ export default function StackedAreaLegend({
 			// format={props.legendFormat}
 			// nice={'nice'}
 		/> : <div></div>}
-	</div>
+	</div>*/}
 </div>
 
 }
