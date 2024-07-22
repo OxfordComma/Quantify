@@ -67,7 +67,7 @@ export default function Table({
 		width: '100%',
 		height: '100%',
 		overflow: 'scroll',
-		padding: '5px',
+		// padding: '5px',
 	}
 
 	return (
