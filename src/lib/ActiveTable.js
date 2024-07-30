@@ -28,7 +28,7 @@ export default function ActiveTable({
  	// 	return <div></div>
  	// }
 
-	if (options === undefined) {
+	if (options === undefined || (typeof(options) == 'object' && JSON.stringify(options)=="{}")) {
 		options = {}
 		if (data.length > 0) {
 				console.log('Creating headers:', data)
