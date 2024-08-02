@@ -14,7 +14,9 @@ export default function Table({
 	titleAlign='center',
 	styles={}, 
 	onClickHeader=()=>{},
-	onClickCell=(d)=>{ console.log('onClickCell', d)},
+	onClickRow=(d)=>{console.log('onClickRow', d.currentTarget)},
+	// onClickCell=(d)=>{ console.log('onClickCell', d)},
+	rowKey,
 	highlight,
 }) {
 	function ShowSortDirection({sortDir, sorting}) {
@@ -30,11 +32,11 @@ export default function Table({
  			<div style={{
  				opacity:  (sortDir=='asc' && sorting)?1:0.25,
  				...arrowStyle, 
- 			}}>▲</div>
+ 			}}>▼</div>
  			<div style={{
  				...arrowStyle, 
  				opacity:  (sortDir=='desc' && sorting)?1:0.25,
- 			}}>▼</div>
+ 			}}>▲</div>
 		</div>)
 	}
 
@@ -72,7 +74,7 @@ export default function Table({
 
 	return (
 		<div className={styles['table-container']} style={tableScrollWindowStyle}>
-			<div className={styles['table-title']} style={titleStyles}>{title}</div>
+			{/*<div className={styles['table-title']} style={titleStyles}>{title}</div>*/}
 			<table className={styles['table']} style={tableStyles}>
 				<thead className={styles['table-head']} style={headerStyles}>
 					<tr className={styles['row']}id='tablerow'>
@@ -93,11 +95,12 @@ export default function Table({
 				</thead>
 				<tbody className={styles['table-body']}>
 					{data.map(d => {
+						{/*console.log('d', rowKey, d)*/}
 						return (
-							<tr className={`${styles['row']} ${(highlight!=undefined && d[highlight]) ? styles['highlighted-row'] : {} }`} style={rowStyles}>
+							<tr id={rowKey ? rowKey(d) : null} className={`${styles['row']} ${(highlight!=undefined && d[highlight]) ? styles['highlighted-row'] : {} }`} style={rowStyles} onClick={onClickRow}>
 								{columns.map(column => {
 									return (
-										<td className={styles['cell']} style={{width: column['width']}} onClick={column['onClick'] ?? onClickCell}>
+										<td className={styles['cell']} style={{width: column['width']}}>
 											{
 												column['cell'] ? 
 												column['cell'](d) : 

@@ -11,6 +11,10 @@ export default function ActiveTable({
 	options, 
 	styles,
 	highlight,
+	rowKey,
+	// onClickHeader=()=>{},
+	onClickRow,
+	onClickCell=()=>{},
 }) {
 	let [data, setData] = useState(rawData)
 	let [sortCol, setSortCol] = useState(null)
@@ -178,7 +182,10 @@ export default function ActiveTable({
 			sortDir={sortDir}
 			styles={styles}
 			onClickHeader={onClickHeader}
+			onClickRow={onClickRow}
+			onClickCell={onClickCell}
 			highlight={highlight}
+			rowKey={rowKey}
 		/>
 	)
 }
