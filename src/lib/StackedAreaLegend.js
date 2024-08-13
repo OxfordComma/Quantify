@@ -70,7 +70,7 @@ export default function StackedAreaLegend({
 			'width': '100%',
 			'height': '100%',
 			// 'flex': 1,
-			'overflow-y': 'scroll',
+			'overflowY': 'scroll',
 			'margin': 0,
 			'cursor': 'pointer',
 		},

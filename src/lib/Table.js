@@ -80,7 +80,7 @@ export default function Table({
 					<tr className={styles['row']}id='tablerow'>
 						{columns.map(column => {
 							{/*console.log('column:', column)*/}
-							return(
+							return (
 								<th className={`${styles['header-cell']} ${styles['cell']}`} >
 									<div id={column['name']} style={column['width'] ? {...headerCellStyles, width: column['width']} : headerCellStyles} onClick={onClickHeader}>
 										<div id={column['name']}>
@@ -100,7 +100,7 @@ export default function Table({
 							<tr id={rowKey ? rowKey(d) : null} className={`${styles['row']} ${(highlight!=undefined && d[highlight]) ? styles['highlighted-row'] : {} }`} style={rowStyles} onClick={onClickRow}>
 								{columns.map(column => {
 									return (
-										<td className={styles['cell']} style={{width: column['width']}}>
+										<td className={`${styles['body-cell']} ${styles['cell']}`} style={{width: column['width']}}>
 											{
 												column['cell'] ? 
 												column['cell'](d) : 
