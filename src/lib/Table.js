@@ -32,11 +32,11 @@ export default function Table({
  			<div style={{
  				opacity:  (sortDir=='asc' && sorting)?1:0.25,
  				...arrowStyle, 
- 			}}>▼</div>
+ 			}}>▲</div>
  			<div style={{
  				...arrowStyle, 
  				opacity:  (sortDir=='desc' && sorting)?1:0.25,
- 			}}>▲</div>
+ 			}}>▼</div>
 		</div>)
 	}
 
