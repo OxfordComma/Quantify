@@ -76,8 +76,8 @@ export default function Table({
 		<div className={styles['table-container']} style={tableScrollWindowStyle}>
 			{/*<div className={styles['table-title']} style={titleStyles}>{title}</div>*/}
 			<table className={styles['table']} style={tableStyles}>
-				<thead className={styles['table-head']} style={headerStyles}>
-					<tr className={styles['row']}id='tablerow'>
+				<thead className={styles['table-header']} style={headerStyles}>
+					<tr className={styles['table-row']} id='tablerow'>
 						{columns.map(column => {
 							{/*console.log('column:', column)*/}
 							return (
@@ -97,7 +97,7 @@ export default function Table({
 					{data.map(d => {
 						{/*console.log('d', rowKey, d)*/}
 						return (
-							<tr id={rowKey ? rowKey(d) : null} className={`${styles['row']} ${(highlight!=undefined && d[highlight]) ? styles['highlighted-row'] : {} }`} style={rowStyles} onClick={onClickRow}>
+							<tr id={rowKey ? rowKey(d) : null} className={`${styles['table-row']} ${ (highlight!==undefined && highlight(d)) ? styles['highlighted-row'] : '' }`} style={rowStyles} onClick={onClickRow}>
 								{columns.map(column => {
 									return (
 										<td className={`${styles['body-cell']} ${styles['cell']}`} style={{width: column['width']}}>
