@@ -19,19 +19,19 @@ export default function CheckmarkDropdown({
 	  control: (styles, { }) => {
 	    return {
 	      ...styles,
-	      backgroundColor: 'black'
+	      backgroundColor: 'var(--bg-color)'
 	    };
 	  },
 	  menuList: (styles, { }) => {
 	    return {
 	      ...styles,
-	      backgroundColor: 'black'
+	      backgroundColor: 'var(--bg-color)'
 	    };
 	  },
 	  option: (styles, { isFocused }) => {
 	    return {
 	      ...styles,
-	      backgroundColor: isFocused ? 'gray' : 'black'
+	      backgroundColor: isFocused ? 'gray' : 'var(--bg-color)'
 	    };
 	  }
 	};
