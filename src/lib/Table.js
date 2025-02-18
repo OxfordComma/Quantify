@@ -69,7 +69,7 @@ export default function Table({
 	let tableScrollWindowStyle = {
 		width: '100%',
 		height: '100%',
-		overflow: 'scroll',
+		// overflow: 'scroll',
 	}
 
 	return (
@@ -95,7 +95,7 @@ export default function Table({
 				</thead>
 				<tbody className={styles['table-body']}>
 					{data.map(d => {
-						{console.log('d', rowKey, d, )}
+						// {console.log('d', rowKey, d, )}
 						return (
 							<tr key={rowKey===undefined ? Math.random().toString(16).slice(2) : rowKey(d)} id={rowKey ? rowKey(d) : null} className={`${styles['table-row']} ${ (highlight!==undefined && highlight(d)) ? styles['highlighted-row'] : '' }`} style={rowStyles} onClick={onClickRow}>
 								{columns.map(column => {
