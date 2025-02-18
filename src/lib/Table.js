@@ -14,7 +14,7 @@ export default function Table({
 	titleAlign='center',
 	styles={}, 
 	onClickHeader=()=>{},
-	onClickRow=(d)=>{console.log('onClickRow', d.currentTarget)},
+	onClickRow=()=>{},
 	// onClickCell=(d)=>{ console.log('onClickCell', d)},
 	rowKey,
 	highlight,
@@ -81,7 +81,7 @@ export default function Table({
 						{columns.map(column => {
 							{/*console.log('column:', column)*/}
 							return (
-								<th className={`${styles['header-cell']} ${styles['cell']}`} >
+								<th key={column['name']} className={`${styles['header-cell']} ${styles['cell']}`} >
 									<div id={column['name']} style={column['width'] ? {...headerCellStyles, width: column['width']} : headerCellStyles} onClick={onClickHeader}>
 										<div id={column['name']}>
 									 		{column['name']}
@@ -95,12 +95,12 @@ export default function Table({
 				</thead>
 				<tbody className={styles['table-body']}>
 					{data.map(d => {
-						{/*console.log('d', rowKey, d)*/}
+						{console.log('d', rowKey, d, )}
 						return (
-							<tr id={rowKey ? rowKey(d) : null} className={`${styles['table-row']} ${ (highlight!==undefined && highlight(d)) ? styles['highlighted-row'] : '' }`} style={rowStyles} onClick={onClickRow}>
+							<tr key={rowKey===undefined ? Math.random().toString(16).slice(2) : rowKey(d)} id={rowKey ? rowKey(d) : null} className={`${styles['table-row']} ${ (highlight!==undefined && highlight(d)) ? styles['highlighted-row'] : '' }`} style={rowStyles} onClick={onClickRow}>
 								{columns.map(column => {
 									return (
-										<td className={`${styles['body-cell']} ${styles['cell']}`} style={{width: column['width']}}>
+										<td key={column['name']} className={`${styles['body-cell']} ${styles['cell']}`} style={{width: column['width']}}>
 											{
 												column['cell'] ? 
 												column['cell'](d) : 
