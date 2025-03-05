@@ -52,8 +52,9 @@ export default function Table({
 
 	const headerStyles = {
 		position: 'sticky',
-  	top: '0px',
-  	cursor: 'pointer',
+  		top: '0px',
+  		cursor: 'pointer',
+  		// zIndex: -1,
 	}
 
 	const headerCellStyles = {
@@ -64,6 +65,10 @@ export default function Table({
 	const rowStyles = {
 		'height': '25px',
 		'maxHeight': '25px',
+	}
+
+	const cellStyles = {
+		// 'pointerEvents': 'none'
 	}
 
 	let tableScrollWindowStyle = {
@@ -97,10 +102,10 @@ export default function Table({
 					{data.map(d => {
 						// {console.log('d', rowKey, d, )}
 						return (
-							<tr key={rowKey===undefined ? Math.random().toString(16).slice(2) : rowKey(d)} id={rowKey ? rowKey(d) : null} className={`${styles['table-row']} ${ (highlight!==undefined && highlight(d)) ? styles['highlighted-row'] : '' }`} style={rowStyles} onClick={onClickRow}>
+							<tr key={rowKey===undefined ? Math.random().toString(16).slice(2) : rowKey(d)} id={rowKey!==undefined ? rowKey(d) : 'test'} className={`${styles['table-row']} ${ (highlight!==undefined && highlight(d)) ? styles['highlighted-row'] : '' }`} style={rowStyles} onClick={onClickRow}>
 								{columns.map(column => {
 									return (
-										<td key={column['name']} className={`${styles['body-cell']} ${styles['cell']}`} style={{width: column['width']}}>
+										<td key={column['name']} className={`${styles['body-cell']} ${styles['cell']}`} style={{...cellStyles, width: column['width'] }}>
 											{
 												column['cell'] ? 
 												column['cell'](d) : 

@@ -10,11 +10,7 @@
     "README.md"
   ],
   "scripts": {
-    "build:babel": "rm -rf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files",
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "build:prod": "webpack --mode=production --node-env=production",
-    "watch": "webpack --watch"
+    "build:babel": "rm -rf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files"
   },
   "repository": {
     "type": "git",
@@ -31,7 +27,6 @@
   "homepage": "https://github.com/OxfordComma/Quantify#readme",
   "dependencies": {
     "d3": "^7.8.5",
-    "d3-svg-legend": "^2.25.6",
     "react": "^18",
     "react-dom": "^18",
     "react-select": "^5.8.0"
@@ -39,12 +34,9 @@
   "devDependencies": {
     "@babel/cli": "^7.22.10",
     "@babel/core": "^7.22.10",
-    "@babel/node": "^7.22.10",
     "@babel/preset-env": "^7.22.10",
     "@babel/preset-react": "^7.22.5",
-    "@webpack-cli/generators": "^3.0.7",
-    "babel-loader": "^9.1.3",
-    "nodemon": "^2.0.20",
-    "webpack": "^5.88.2"
+    "webpack": "^5.88.2",
+    "webpack-cli": "^6.0.1"
   }
 }

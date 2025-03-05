@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 
 import * as d3 from 'd3'
-import { legendColor } from 'd3-svg-legend'
+// import { legendColor } from 'd3-svg-legend'
 
 // class Legend extends React.Component {
 export default function Legend({
