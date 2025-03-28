@@ -102,10 +102,10 @@ export default function Table({
 					{data.map(d => {
 						// {console.log('d', rowKey, d, )}
 						return (
-							<tr key={rowKey===undefined ? Math.random().toString(16).slice(2) : rowKey(d)} id={rowKey!==undefined ? rowKey(d) : 'test'} className={`${styles['table-row']} ${ (highlight!==undefined && highlight(d)) ? styles['highlighted-row'] : '' }`} style={rowStyles} onClick={onClickRow}>
+							<tr key={rowKey ? rowKey(d) : Math.random().toString(16).slice(2)} id={rowKey ? rowKey(d) : null} className={`${styles['table-row']} ${ (highlight!==undefined && highlight(d)) ? styles['highlighted-row'] : '' }`} style={rowStyles} onClick={onClickRow}>
 								{columns.map(column => {
 									return (
-										<td key={column['name']} className={`${styles['body-cell']} ${styles['cell']}`} style={{...cellStyles, width: column['width'] }}>
+										<td key={column['name']} className={`${styles['body-cell']} ${styles['cell']} ${ (highlight!==undefined && highlight(d)) ? styles['highlighted-cell'] : '' }`} style={{...cellStyles, width: column['width'] }} onClick={column['onClick'] ?? null}>
 											{
 												column['cell'] ? 
 												column['cell'](d) : 

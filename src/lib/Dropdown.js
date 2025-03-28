@@ -32,7 +32,7 @@ export default function Dropdown({
 		<span>
 			<label>{label}</label>
 			<select value={selected} onChange={onChange} >
-			  { items.map(u => <option value={id(u)}>{String(accessor(u))}</option>)}
+			  { items.map(u => <option key={id(u)} value={id(u)}>{String(accessor(u))}</option>)}
 			</select>
 		</span>
 	)
