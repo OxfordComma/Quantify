@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useId } from 'react'
 import CheckmarkDropdown from './CheckmarkDropdown'
 
 export default function DropdownSelect({ 
@@ -104,6 +104,8 @@ export default function DropdownSelect({
 
 	return (
 		<CheckmarkDropdown
+			instanceId={useId()}
+			
 			items={items}
 			label={label}
 			selected={selected}

@@ -15,10 +15,11 @@ export default function ActiveTable({
 	// onClickHeader=()=>{},
 	onClickRow,
 	onClickCell=()=>{},
+	defaultSort,
 }) {
 	let [data, setData] = useState(rawData)
-	let [sortCol, setSortCol] = useState(null)
-	let [sortDir, setSortDir] = useState(null)
+	let [sortCol, setSortCol] = useState(defaultSort)
+	let [sortDir, setSortDir] = useState('asc')
 
 	function detectDataType(datum, accessor) {
  		if (accessor(datum) instanceof Date) 
@@ -89,27 +90,33 @@ export default function ActiveTable({
 	useEffect(() => {
 		rawData = rawData.map((d, index)=> {
 			return {
-				index: index,
+				index: index+1,
 				...d
 			}
-		}).sort()
+		})
+		rawData = sortData(rawData, sortCol, sortDir)
+
 
 		setData(rawData)
 	}, [rawData])
 
 	function sortData(data, column, direction) {
 		let newData = data
-		const col = columns.find(c => c['name'] == column)
-		// console.log('col:', col)
+		const col = columns.find(c => c['Header'] == column)
+		// console.log('col:', col, column, columns, direction)
 		let accessor
-		if ('sort' in col) {
+		if (!col) {
+			accessor = d => d['index']
+		}
+		// else 
+		else if ('sort' in col) {
 			accessor = col.sort
 		}
 		else {
 			accessor = col.accessor
 		}
 
-		if (direction == null ) {
+		if (direction === null ) {
 			newData = newData.sort((a, b) => {
 				if (a === null ) return 1;
 				if (b === null) return -1;

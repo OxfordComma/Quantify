@@ -9,6 +9,7 @@ import Legend from './Legend.js'
 import Table from './ActiveTable.js'
 
 import Dropdown from './Dropdown.js'
+import CheckmarkDropdown from './CheckmarkDropdown.js'
 import DropdownFilter from './DropdownFilter.js'
 import DropdownSelect from './DropdownSelect.js'
 
@@ -21,6 +22,7 @@ export {
 	StackedArea, StackedAreaLegend,
 	Legend, 
 	Table,
-	Dropdown, DropdownFilter, DropdownSelect,
+	Dropdown, CheckmarkDropdown,
+	DropdownFilter, DropdownSelect,
 	MenuBar
 };

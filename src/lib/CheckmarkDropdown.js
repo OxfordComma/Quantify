@@ -2,7 +2,7 @@
 import React from 'react'
 import Select from 'react-select';
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useId } from 'react'
 
 export default function CheckmarkDropdown({ 
 		items,
@@ -39,15 +39,16 @@ export default function CheckmarkDropdown({
 	return (
 		<div style={{width: '100%'}}>
 			<Select
-        defaultValue={selected}
-        onChange={setSelected}
-        options={options}
-        isMulti={true}
-        placeholder={placeholder ?? selected}
-        styles={
-        	colorStyles
-        }
-      />
-    </div>
+				instanceId={useId()}
+		        defaultValue={selected}
+		        onChange={setSelected}
+		        options={options}
+		        isMulti={true}
+		        placeholder={placeholder ?? selected}
+		        styles={
+		        	colorStyles
+		        }
+      		/>
+    	</div>
 	)
 }
