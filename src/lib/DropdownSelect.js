@@ -26,7 +26,7 @@ export default function DropdownSelect({
 	let [items, setItems] = useState([])
 
 	useEffect(() => {
-		console.log('selected:', selected)
+		// console.log('selected:', selected)
 		let newData = []
 
 		if (selected.length == 0) {
@@ -34,9 +34,9 @@ export default function DropdownSelect({
 		}
 		else {
 			for (let s of selected) {
-				console.log('s', s)
-				newData = newData.concat(data.filter(d => d[column] == s.value))
-				console.log('nd', newData)
+				// console.log('s', s)
+				newData = filteredData.concat(data.filter(d => d[column] == s.value))
+				// console.log('nd', newData)
 			}	
 		}
 

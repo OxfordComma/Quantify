@@ -109,7 +109,7 @@ export default function Table({
 										<td key={column['name']} className={`${styles['body-cell']} ${styles['cell']} ${ (highlight!==undefined && highlight(d)) ? styles['highlighted-cell'] : '' }`} style={{...cellStyles, width: column['width'] }} onClick={column['onClick'] ?? null}>
 											{
 												column['cell'] ? 
-												column['cell'](d) : 
+												column['cell'](d, data) : 
 													column['format'] ? 
 													column['format'](column['accessor'](d)) : 
 													column['accessor'](d)?.toString() ?? ''
