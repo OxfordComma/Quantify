@@ -29,10 +29,6 @@ export default function ActiveTable({
  			return typeof(accessor(datum))
  	}
 
- 	// if (data.length == 0) {
- 	// 	return <div></div>
- 	// }
-
 	if (options === undefined || (typeof(options) == 'object' && JSON.stringify(options)=="{}")) {
 		options = {}
 		if (data.length > 0) {
@@ -45,46 +41,40 @@ export default function ActiveTable({
 	}
 
 	let columns
-	// if (data.length == 0) {
-	// 	columns = []
-	// }
-	// else {
-		columns = Object.keys(options).map(c => {
-			let opt = options[c]
-			// console.log('opt:', opt, options, c)
+	columns = Object.keys(options).map(c => {
+		let opt = options[c]
+		// console.log('opt:', opt, options, c)
 
-			if (typeof opt == 'string') {
-				opt = {
-					name: options[c],
-					accessor: d => d[ c ],
-				}
+		if (typeof opt == 'string') {
+			opt = {
+				name: options[c],
+				accessor: d => d[ c ],
 			}
+		}
 
-			if (!opt.name) 
-				opt.name = c
+		if (!opt.name) 
+			opt.name = c
 
-			if (!opt.accessor) 
-				opt.accessor = d => d[c] 
+		if (!opt.accessor) 
+			opt.accessor = d => d[c] 
 
-	
-			if ( data.length > 0 && detectDataType(data[0], opt.accessor) == 'date' && !opt.format) {
-				opt.format = d3.utcFormat("%Y-%m-%d")
-			}
 
-			if (opt.format && !opt.cell)
-				opt.cell = d => <div>{opt.format(opt.accessor(d))}</div>
+		if ( data.length > 0 && detectDataType(data[0], opt.accessor) == 'date' && !opt.format) {
+			opt.format = d3.utcFormat("%Y-%m-%d")
+		}
 
-			// Cell: d => <a href={d.row.original.uri}>{d.row.original.album.name}</a>,
-			let obj = {
-				Header: c,
-				sortType: 'basic',
-				backgroundColor: 'rgba(52, 52, 52, 0.8)',
-				...opt
-			}
+		if (opt.format && !opt.cell)
+			opt.cell = d => <div>{opt.format(opt.accessor(d))}</div>
 
-			return obj
-		})
-	// }
+		let obj = {
+			Header: c,
+			sortType: 'basic',
+			backgroundColor: 'rgba(52, 52, 52, 0.8)',
+			...opt
+		}
+
+		return obj
+	})
 	
 	
 	useEffect(() => {
@@ -102,13 +92,12 @@ export default function ActiveTable({
 
 	function sortData(data, column, direction) {
 		let newData = data
-		const col = columns.find(c => c['Header'] == column)
-		// console.log('col:', col, column, columns, direction)
+		const col = columns.find(c => c['name'] == column)
+		console.log('col:', col, column, columns, direction)
 		let accessor
 		if (!col) {
 			accessor = d => d['index']
 		}
-		// else 
 		else if ('sort' in col) {
 			accessor = col.sort
 		}
@@ -148,8 +137,8 @@ export default function ActiveTable({
 
 	function onClickHeader(e) {
 		e.preventDefault();
-		// let newSortCol = e.target.textContent.replace(/[▲▼]/, '').trim()
-		let newSortCol = e.target.id//.replace(/[▲▼]/, '').trim()
+
+		let newSortCol = e.target.id
 		let newSortDir = sortDir
 		
 		if (newSortCol != sortCol) {
